@@ -1,0 +1,21 @@
+/*The for loop iterates over each element in the input array and performs constant time operations 
+for each iteration, which gives a time complexity of O(n) for the loop.
+
+Within the loop, each element is pushed onto the min heap, which takes O(log k) time since the 
+size of the heap is limited to k. If the size of the heap exceeds k, the smallest element in the 
+heap is removed using the pop() function, which also takes O(log k) time.
+
+The final element at the top of the min heap is returned as the kth largest element, which takes 
+constant time using the top() function.
+
+Therefore, the overall time complexity of this implementation is O(n log k).*/
+int findKthLargest(vector<int>& nums, int k) {
+        priority_queue<int, vector<int>, greater<int>> min_heap;
+        for (int num : nums) {
+            min_heap.push(num);
+            if (min_heap.size() > k) {
+                min_heap.pop();
+            }
+        }
+        return min_heap.top();
+    } 

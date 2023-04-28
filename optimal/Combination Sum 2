@@ -1,0 +1,35 @@
+/*Time Complexity:O(2^n*k)
+Reason: Assume if all the elements in the array are unique then the no. of subsequence
+ you will get will be O(2^n). we also add the v to our ans when we reach the base case 
+ that will take “k”//average space for the v.
+Space Complexity:O(k*x)
+Reason: if we have x combinations then space will be x*k where k is the average length of 
+the combination.*/
+class Solution {
+public:
+    void sum(vector<int>& candidates, int target,int ind,vector<int>& v,vector<vector<int>>& ans){
+        if(target==0){
+        ans.push_back(v);
+        return;
+        }
+        if(ind==candidates.size())
+        return;
+        for(int i=ind;i<candidates.size();i++)
+        {
+        if(candidates[i]>target)
+        break;
+        if(i>ind && candidates[i]==candidates[i-1])
+        continue;
+        v.push_back(candidates[i]);
+        sum(candidates,target-candidates[i],i+1,v,ans);
+        v.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+    vector<vector<int>>ans;
+    vector<int>v;
+    sort(candidates.begin(),candidates.end());
+    sum(candidates,target,0,v,ans);
+    return ans;
+    }
+};

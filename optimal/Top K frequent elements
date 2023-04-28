@@ -1,0 +1,31 @@
+/* First, we create an unordered map m to store the frequency of each element in nums, which takes O(n)
+time in the worst case. Then, we use a min-heap implemented as a priority_queue to keep track of the
+k elements with highest frequency. For each element-frequency pair in m, we push it onto the 
+min-heap, which takes O(log k) time. If the size of the min-heap exceeds k, we pop the smallest
+element, which also takes O(log k) time. Therefore, the total time complexity of this part is 
+O(n log k).
+Finally, we create a vector ans and fill it with the elements in the min-heap, which takes O(k log k)
+ time since we need to pop the top element of the min-heap k times. Therefore, the overall time 
+ complexity is O(n log k + k log k), which is equivalent to O(n log k) since k <= n.*/
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int>m;
+        for(int i = 0; i < nums.size(); i++) {
+            m[nums[i]]++;
+        }
+        priority_queue <pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+        for(auto x : m) {
+            pq.push({x.second, x.first});
+            if(pq.size() > k) {
+                pq.pop();
+            }
+        }
+        vector<int> ans;
+        while(pq.size()) {
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }
+        return ans;
+    }
+};

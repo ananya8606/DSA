@@ -1,0 +1,55 @@
+/*Time Complexity: O(N * N * M) - where N is the no of nodes in the main linked list
+ and M is the no of nodes in a single sub-linked list 
+Explanation: As we are merging 2 lists at a time,
+
+After adding the first 2 lists, the time taken will be O(M+M) = O(2M).
+Then we will merge another list to above merged list -> time = O(2M + M) = O(3M).
+Then we will merge another list -> time = O(3M + M).
+We will keep merging lists to previously merged lists until all lists are merged.
+Total time taken will be O(2M + 3M + 4M + .... N*M) = (2 + 3 + 4 + ... + N) * M
+Using arithmetic sum formula: time = O((N * N + N - 2) * M/2)
+The above expression is roughly equal to O(N * N * M) for a large value of N
+Auxiliary Space: O(N*M) - because of the recursion. The recursive functions will
+ use a recursive stack of a size equivalent to a total number of elements in the lists, 
+ which is N*M.*/
+/* Node structure  used in the program
+
+struct Node{
+	int data;
+	struct Node * next;
+	struct Node * bottom;
+	
+	Node(int x){
+	    data = x;
+	    next = NULL;
+	    bottom = NULL;
+	}
+	
+};
+*/
+/* Helper function to merge two sorted linked lists */
+Node* merge(Node* a, Node* b) {
+    if (!a) return b;
+    if (!b) return a;
+    
+    Node* result;
+    if (a->data <= b->data) {
+        result = a;
+        result->bottom = merge(a->bottom, b);
+    } else {
+        result = b;
+        result->bottom = merge(a, b->bottom);
+    }
+    
+    return result;
+}
+
+/* Function to flatten a linked list using a merge-sort-based approach */
+Node* flatten(Node* root) {
+    if (!root || !root->next) return root;
+    
+    root->next = flatten(root->next);
+    root = merge(root, root->next);
+    
+    return root;
+}

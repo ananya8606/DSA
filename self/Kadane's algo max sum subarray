@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) 
+    {
+int sum=nums[0],j=nums[0],ans;
+if(nums.size()==1)
+return sum;
+else if(nums.size()==0)
+return 0;
+for(int k=1;k<nums.size();k++){
+ int sum1=sum+nums[k];
+ int sum2=nums[k];
+ sum=max(sum1,sum2);
+ j=max(j,sum);
+}
+return j;
+    }
+};

@@ -1,0 +1,44 @@
+/*The time complexity of the kMaxSumCombination function is O(k log k), where k is the number of 
+maximum sum combinations to be found.
+The sorting step of both arrays takes O(n log n) time, where n is the size of the arrays. The nested 
+for loop takes O(k^2) time to generate all possible sum combinations, but we only need to consider 
+the k largest sums, so we can optimize this step using a priority queue of size k, which takes
+ O(k log k) time.
+The while loop runs k times and each iteration involves inserting at most two new elements into the 
+priority queue, which takes O(log k) time for each insertion. Hence, the overall time complexity 
+is O(k log k).*/
+#include <bits/stdc++.h> 
+
+using namespace std;
+
+vector<int> kMaxSumCombination(vector<int> &a, vector<int> &b, int n, int k) {
+    sort(a.begin(), a.end(), greater<int>());
+    sort(b.begin(), b.end(), greater<int>());
+
+    set<pair<int,int>> s;
+    priority_queue<pair<int,pair<int,int>>> max_heap;
+    max_heap.push(make_pair(a[0]+b[0],make_pair(0,0)));
+    s.insert(make_pair(0,0));
+
+    vector<int> ans;
+
+    while(k--){
+        pair<int,pair<int,int>> p=max_heap.top();
+        max_heap.pop();
+        ans.push_back(p.first);
+        int i=p.second.first;
+        int j=p.second.second;
+
+        if(i+1<n && s.find(make_pair(i+1,j))==s.end()){
+            max_heap.push(make_pair(a[i+1]+b[j],make_pair(i+1,j)));
+            s.insert(make_pair(i+1,j));
+        }
+        if(j+1<n && s.find(make_pair(i,j+1))==s.end()){
+            max_heap.push(make_pair(a[i]+b[j+1],make_pair(i,j+1)));
+            s.insert(make_pair(i,j+1));
+        }
+    }
+
+    return ans;
+}
+

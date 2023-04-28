@@ -1,0 +1,30 @@
+/*The purpose of the std::find() function call is to check whether the current element 
+nums[i] is already present in the current permutation v. Since v is a subset of nums, the
+ maximum size of v is N, and therefore the worst-case time complexity of std::find() in the
+  given code is O(N) for the first recursive call, but it is less than N for all subsequent
+   recursive calls.
+As a result, the overall time complexity of the algorithm is O(N * N!), which simplifies to O(N!).
+Space Complexity: O(N) for recursion stack + O(N!) for ans vector + O(N) for vector v.*/
+class Solution {
+    public:
+    void permu(int ind,vector<int> v,vector<vector<int>>& ans,vector<int>& nums){
+    if(ind==nums.size())
+    {
+    ans.push_back(v);
+    return;
+    }
+    for(int i=0;i<nums.size();i++){
+    if(std::find(v.begin(), v.end(),nums[i]) != v.end())
+    continue;
+    v.push_back(nums[i]);
+    permu(ind+1,v,ans,nums);
+    v.pop_back();
+    }
+    }
+        vector<vector<int>> permute(vector<int>& nums) {
+        vector<int>v;
+        vector<vector<int>>ans;
+        permu(0,v,ans,nums);
+        return ans;
+        }
+    };

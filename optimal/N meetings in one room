@@ -1,0 +1,236 @@
+/*Overall, the code has a time complexity of O(n log n), where n is the number of meetings, 
+due to the sorting operation. The space complexity is O(n) since we create a vector of pairs
+ to store the meetings.*/
+ class Solution
+{
+    public:
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    int maxMeetings(int start[], int end[], int n)
+    {
+         vector<pair<int, int>> pairs;
+    for (int i = 0; i < n; i++) {
+        pairs.push_back(make_pair(start[i], end[i]));
+    }
+
+    // Sort the vector of pairs by the values
+    sort(pairs.begin(), pairs.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+        return a.second < b.second;
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+        // Your code here
+        int k=1;
+        int lasti=0;
+        for(int i=1;i<n;i++){
+        if(pairs[lasti].second>=pairs[i].first)
+        continue;
+        else{
+        k++;
+        lasti=i;
+        }
+        }
+        return k;
+    }
+};

@@ -1,0 +1,19 @@
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int arr[3]={0,0,0};
+        for(int i=0;i<nums.size();i++)
+        {
+        ++arr[nums[i]];
+        }
+        int i,j,k;
+        for(i=0;i<arr[0];i++)
+        nums[i]=0;
+        for(j=i;j<i+arr[1];j++)
+        nums[j]=1;
+        for(k=j;k<j+arr[2];k++)
+        nums[k]=2;
+        for(int i=0;i<nums.size();i++)
+        cout<<nums[i];
+    }
+};

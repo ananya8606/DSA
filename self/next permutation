@@ -1,0 +1,33 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int x=-1,index;
+        if(nums.size()==0)
+        cout<<"";
+        else if(nums.size()==1)
+        cout<<nums[0];
+        else{
+        for(int i=nums.size()-2;i>=0;i--){
+        if(nums[i]<nums[i+1]){
+         x=i;
+         break;
+        }
+            }
+            if(x==-1)
+             reverse(nums.begin(),nums.end());
+             else{
+     for(int i=x+1;i<nums.size();i++){
+     if(nums[i]>nums[x])
+     index=i;
+     }
+         int temp=0;
+        temp=nums[x];
+        nums[x]=nums[index];
+        nums[index]=temp;
+        reverse(nums.begin()+x+1,nums.end());
+             }
+       for(int i=0;i<nums.size();i++)
+       cout<<nums[i];
+        }
+    }
+};

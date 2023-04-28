@@ -1,0 +1,36 @@
+/*The time complexity of addNum method using two heaps is O(log n) in the worst case, where n is the
+number of elements in the two heaps. This is because inserting an element into a heap takes
+logarithmic time complexity O(log n).
+The time complexity of findMedian method is O(1) because it only involves accessing the roots of the 
+two heaps, which takes constant time complexity.
+Therefore, the overall time complexity is O(log n) */
+class MedianFinder {
+public:
+    priority_queue<int> max_heap;
+    priority_queue<int, vector<int>, greater<int>> min_heap;
+
+    MedianFinder() {}
+    
+    void addNum(int num) {
+        if (max_heap.empty() || num <= max_heap.top()) {
+            max_heap.push(num);
+        } else {
+            min_heap.push(num);
+        }
+        if (max_heap.size() > min_heap.size() + 1) {
+            min_heap.push(max_heap.top());
+            max_heap.pop();
+        } else if (min_heap.size() > max_heap.size()) {
+            max_heap.push(min_heap.top());
+            min_heap.pop();
+        }
+    }
+    
+    double findMedian() {
+        if (max_heap.size() == min_heap.size()) {
+            return (double) (max_heap.top() + min_heap.top()) / 2.0;
+        } else {
+            return max_heap.top();
+        }
+    }
+};

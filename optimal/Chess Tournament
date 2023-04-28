@@ -1,0 +1,32 @@
+ /*Time Complexity: O(N*log(M)). 
+Reason: For binary search in a space of M, O(log(M))  and for each 
+search, we iterate over max N stalls to check. O(N).
+Space Complexity: O(1)*/
+ #include <bits/stdc++.h>
+ using namespace std;
+    bool isPossible(vector<int> positions, int n, int cows, int minDist) {
+      int cntCows = 1;
+      int lastPlacedCow = positions[0];
+      for(int i = 1; i < n; i++) {
+        if(positions[i] - lastPlacedCow >= minDist) {
+          cntCows++;
+          lastPlacedCow = positions[i];
+        }
+      }
+      if(cntCows >= cows) 
+      return true;
+      return false;
+    }
+    int chessTournament(vector<int> positions, int n, int c) {
+      sort(positions.begin(),positions.end());
+      int low = 1, high = positions[n - 1] - positions[0];
+      while(low <= high) {
+        int mid = (low + high) >> 1;
+        if(isPossible(positions, n, c, mid)) {
+          low = mid + 1;
+        } else {
+          high = mid - 1;
+        }
+      }
+      return high;
+    }

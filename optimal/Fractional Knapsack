@@ -1,0 +1,41 @@
+/*Time Complexity:O(nlogn).Space Complexity:O(1).*/
+/*
+struct Item{
+    int value;
+    int weight;
+};
+*/
+
+class Solution
+{
+    public:
+    static bool compare(Item &a, Item &b) {
+    double r1 = (double) a.value / a.weight;
+    double r2 = (double) b.value / b.weight;
+    return r1 > r2;
+}
+    //Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(int W, Item arr[], int n)
+    {
+        // Your code here
+        if(W==0 || n==0)
+        return 0.00;
+        double profit=0;
+        sort(arr,arr+n,compare);
+        int i=0;
+        while(W && i<n){
+            double r=(double)arr[i].value/arr[i].weight;
+            if(arr[i].weight>=W){
+            profit+=r*W;
+            W=0;
+            }
+            else if(arr[i].weight<W){
+            profit+=r*arr[i].weight;
+            W-=arr[i].weight;
+            }
+            i++;
+        }
+        return profit;
+    }
+        
+};

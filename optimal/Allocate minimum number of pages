@@ -1,0 +1,54 @@
+/*The time complexity of this code is O(m*log(sum)), where m is the 
+number of tasks and sum is the sum of all the task times.
+Space Complexity:O(1).
+*/
+#include <bits/stdc++.h>
+using namespace std;
+bool itispossible(int n, int m, vector<int> time, long long mid)
+{
+    int days=1;
+    long long int seconds=0;
+    for(int i=0;i<m;i++)
+    {
+        if(seconds + time[i]<=mid)
+        {
+            seconds = seconds + time[i];
+        }
+      else
+        {
+            days++;
+       if(days>n || time[i]>mid)
+            {
+                return false;
+            }
+            seconds=time[i];
+        }
+    }
+    return true;
+}
+long long ayushGivesNinjatest(int n, int m, vector<int> time) 
+{   
+    long long s=0;
+    long long sum=0;
+    for(int i=0;i<m;i++)
+    {
+    sum = sum + time[i];
+    }
+    long long ans=-1;
+    long long e=sum;
+    while(s<=e)
+    {
+         long long mid=s+(e-s)/2;
+        if(itispossible(n,m,time,mid))
+        {
+            ans=mid;
+            e=mid-1;
+        }
+        else
+        {
+            s=mid+1;
+        }
+    }
+    return ans;
+}
+

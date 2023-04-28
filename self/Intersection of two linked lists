@@ -1,0 +1,44 @@
+//Time Complexity= O(2*max(m,n)).Space Complexity:O(1).
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* a=headA;
+        ListNode* b=headB;
+        int c1=0,c2=0;
+        while(a){
+        c1++;
+        a=a->next;
+        }
+        while(b){
+        c2++;
+        b=b->next;
+        }
+        b=headB;
+        a=headA;
+        int c=max(c1,c2)-min(c1,c2);
+        if(c1>=c2)
+        {
+        for(int i=0;i<c;i++){
+        a=a->next;
+        }
+        }
+        else{
+        for(int i=0;i<c;i++){
+        b=b->next;
+        }   
+        }
+        while(a!=b){
+        a=a->next;
+        b=b->next;
+        }
+        return a;
+    }
+};

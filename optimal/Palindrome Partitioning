@@ -1,0 +1,73 @@
+/*Auxiliary Space:
+
+It refers to the extra space used by an algorithm to perform its computation.
+It does not include the input space and the space used by the output.
+It is usually used to store temporary variables, function call stack, and other overheads.
+The auxiliary space of an algorithm is measured in terms of the maximum amount of space used 
+by the algorithm at any point during its execution.
+The auxiliary space of an algorithm can be different from the space complexity of the algorithm.
+Auxiliary space is also known as extra space or working space.
+
+Space Complexity:
+
+It refers to the amount of memory used by an algorithm to solve a problem.
+It includes both auxiliary space and input/output space.
+It is usually measured in terms of the maximum amount of space used by the algorithm at any 
+point during its execution.
+Space complexity can be different from time complexity, as an algorithm that has a low time 
+complexity may require a large amount of memory to execute.
+
+*/
+/*The time complexity of this code is O(n*(2^n)), where n is the length of the input string s.
+The reason for this time complexity is as follows:
+The recursive function palin is called 2^n times in the worst case, where n is the length of 
+the input string s. This is because for each character in s, there are two choices: either 
+include it in the current partition or start a new partition. Therefore, the number of recursive 
+calls is equal to the number of ways we can partition the string, which is 2^n.
+For each substring, it takes O(n) time to determine if it is a palindrome or not. This gives us 
+a time complexity of O(n*2^n).
+Space Complexity: O(k * x)
+Reason: The space complexity can vary depending upon the length of the answer. 
+k is the average length of the list of palindromes and if we have x such list of palindromes 
+in our final answer. The depth of the recursion tree is n, so the auxiliary space required is 
+equal to the O(n).
+*/
+class Solution {
+public:
+    bool ispalin(string s) {
+        int l = 0;
+        int h = s.size() - 1;
+  
+        // Keep comparing characters
+        // while they are same
+        while (h > l) {
+            if (s[l++] != s[h--]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    void palin(string s, int ind, vector<string>& v, vector<vector<string>>& ans) {
+        if (ind == s.size()) {
+            ans.push_back(v);
+            return;
+        }
+        
+        for (int i = ind; i < s.size(); i++) {
+            string sub = s.substr(ind, i - ind + 1);
+            if (ispalin(sub)) {
+                v.push_back(sub);
+                palin(s, i + 1, v, ans);
+                v.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<string>> partition(string s) {
+        vector<string> v;
+        vector<vector<string>> ans;
+        palin(s, 0, v, ans);
+        return ans;
+    }
+};

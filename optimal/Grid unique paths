@@ -1,0 +1,24 @@
+//Combinatorics Solution 
+//Total steps = m-1 right steps + n-1 down steps = m+n-2
+//We can have either m+n-2Cm-1 or m+n-2Cn-1 paths
+//10C3=(8/1)*(9/2)*(10/3)
+#include<bits/stdc++.h>
+using namespace std;
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+            int N = n + m - 2;
+            int r = m - 1; 
+            double res = 1;
+            
+            for (int i = 1; i <= r; i++)
+                res = res * (N - r + i) / i;
+            return (int)res;
+    }
+};
+int main()
+{
+    Solution obj;
+    int totalCount= obj.uniquePaths(2,3);
+    cout<<"The total number of Unique Paths are "<<totalCount<<endl;
+}

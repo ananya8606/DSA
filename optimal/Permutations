@@ -1,0 +1,22 @@
+/*Time Complexity: O(N! X N).Space Complexity: O(n) for recurion tree+ O(n!) for ans vector.*/
+class Solution {
+public:
+void permu(int ind,vector<vector<int>>& ans,vector<int>& nums){
+if(ind==nums.size())
+{
+ans.push_back(nums);
+return;
+}
+for(int i=ind;i<nums.size();i++){
+swap(nums[ind],nums[i]);
+permu(ind+1,ans,nums);
+swap(nums[ind],nums[i]);
+}
+}
+    vector<vector<int>> permute(vector<int>& nums) {
+    vector<int>v=nums;
+    vector<vector<int>>ans;
+    permu(0,ans,nums);
+    return ans;
+    }
+};

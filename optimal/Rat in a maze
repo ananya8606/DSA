@@ -1,0 +1,26 @@
+/*Time Complexity: O(4^(n^2)), because on every cell we need to try 4 different directions.
+Space Complexity:  O(n^2), Maximum Depth of the recursion tree(auxiliary space).*/
+class Solution{
+    public:
+      void start(int i, int j, vector<vector<int>>& a, int n, vector<string>& s, string v) {
+        if (i < 0 || i >= n || j < 0 || j >= n || a[i][j] == 0) {
+            return;
+        }
+        if (i == n - 1 && j == n - 1) {
+            s.push_back(v);
+            return;
+        }
+        a[i][j] = 0; // mark current cell as visited
+        start(i - 1, j, a, n, s, v + "U"); // go up
+        start(i + 1, j, a, n, s, v + "D"); // go down
+        start(i, j - 1, a, n, s, v + "L"); // go left
+        start(i, j + 1, a, n, s, v + "R"); // go right
+        a[i][j] = 1; // mark current cell as unvisited
+    }
+
+    vector<string> findPath(vector<vector<int>>& m, int n) {
+        vector<string> s;
+        start(0, 0, m, n, s, "");
+        return s;
+    }
+};

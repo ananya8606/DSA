@@ -1,0 +1,29 @@
+/*Time Complexity: O(N) because we are using 2 pointer approach.
+Space Complexity: O(1) because we are not using anything extra.*/
+class Solution {
+public:
+    int trap(vector<int>& height) {
+    int maxleft=0;
+    int maxright=0;
+    int unit=0;
+    int left=0;
+    int right=height.size()-1;
+    while(left<right){
+    if(height[left]<=height[right]){
+    if(height[left]>maxleft)
+    maxleft=height[left];
+    else
+    unit+=(maxleft-height[left]);
+    left++;
+    }
+    else{
+    if(height[right]>maxright)
+    maxright=height[right];
+    else
+    unit+=maxright-height[right];
+    right--;
+    }
+    }
+    return unit;
+    }
+};

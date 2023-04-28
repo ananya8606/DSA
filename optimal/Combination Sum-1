@@ -1,0 +1,26 @@
+/*Time Complexity: O(2^t * k) where t is the target, k is the average length.
+Why not (2^n) but (2^t) (where n is the size of an array)?
+Assume that there is 1 and the target you want to reach is 10 so 10 times you 
+can “pick or not pick” an element as we are allowed to pick an element multiple times.
+Space Complexity: O(k*x), k is the average length and x is the no. of combinations.*/
+class Solution {
+public:
+    void sum(vector<int>& candidates, int target,int ind,vector<int>& v,vector<vector<int>>& ans){
+        if(target==0){
+        ans.push_back(v);
+        return;
+        }
+        if(target<0 || ind==candidates.size())
+        return;
+        v.push_back(candidates[ind]);
+        sum(candidates,target-candidates[ind],ind,v,ans);
+        v.pop_back();
+        sum(candidates,target,ind+1,v,ans);
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+    vector<vector<int>>ans;
+    vector<int>v;
+    sum(candidates,target,0,v,ans);
+    return ans;
+    }
+};

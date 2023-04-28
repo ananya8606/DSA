@@ -1,0 +1,36 @@
+/*Time Complexity: O(n*log(m)), Where ‘n’ and ‘m’ are input integers.
+In the above algorithm, the search space is ‘m’, and hence in ‘log(m)’ iterations, 
+we will find the ‘n’th root, and in each iteration, we find the ‘n’th power of ‘mid’ using a loop.
+Hence the time complexity will be O(n*log(m)).
+ 
+In the above algorithm, we only use variables.
+Hence the space complexity will be O(1).*/
+
+double multi(double mid, int n) {
+    double num = mid;
+    for(int i = 1; i < n; ++i) {
+        mid *= num;
+    }
+    return mid;
+}
+double NthRoot(int n, int m) {
+	// using binary search
+    double low = 1, high = m;    // the answer will lie in between [1,m] only
+    
+    while(true) {
+        double mid = ( low + high ) / 2.0;
+        double curr = multi(mid, n);
+        
+        if(curr == m) return mid;    // if found ans directly, then return from here
+        else if(curr < m) low = mid;
+        else high = mid;
+        
+        // condition to break the loop
+        double first =  double (int((low * 1e7)) / 1e7);
+        double second = double (int((high * 1e7)) / 1e7);
+        if( first == second )    
+            break;
+    }
+    // if not found a direct ans, then low is the answer!
+    return -1;
+}

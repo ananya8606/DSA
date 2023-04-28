@@ -1,0 +1,47 @@
+/*The given solution has a time complexity of O(n log n) due to sorting the vector of pairs 
+using the sort() function. In the worst case, we have to iterate through all the pairs once, 
+so the time complexity of the loop is O(n). The time complexity of finding the minimum end time 
+using min_element() function is O(n). Thus, the overall time complexity of the algorithm is
+ O(n log n).
+The space complexity of the solution is O(n), where n is the number of pairs, as we are using 
+a vector of pairs to store the arrival and departure times.*/
+class Solution{
+    public:
+    //Function to find the minimum number of platforms required at the
+    //railway station such that no train waits.
+    int findPlatform(int arr[], int dep[], int n)
+    {
+    	// Your code here
+         vector<pair<int, int>> pairs;
+    for (int i = 0; i < n; i++) {
+        pairs.push_back(make_pair(arr[i],dep[i]));
+    }
+
+    // Sort the vector of pairs by the values
+    sort(pairs.begin(), pairs.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+        return a.first < b.first;
+    });
+    	int k=1;
+    	vector<int>minend;
+    	minend.push_back(pairs[0].second);
+    	for(int i=0;i<n-1;i++){
+    	    int m=*min_element(minend.begin(),minend.end());
+    	    int pos=min_element(minend.begin(),minend.end())-minend.begin();
+    	    if(pairs[i].second<pairs[i+1].first){
+    	    minend.erase(minend.begin()+pos);
+    	    minend.push_back(pairs[i+1].second);
+    	    continue;
+    	    }
+    	    else if(pairs[i].second>=pairs[i+1].first && pairs[i+1].first>m){
+    	    minend.erase(minend.begin()+pos);
+    	    minend.push_back(pairs[i+1].second);
+    	    continue;
+    	    }
+    	    else if(pairs[i].second>=pairs[i+1].first && pairs[i+1].first<=m){
+    	    minend.push_back(pairs[i+1].second);
+    	    k++;
+    	}
+    	}
+    	return k;
+    }
+};

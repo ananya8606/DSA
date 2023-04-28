@@ -1,0 +1,21 @@
+//Time Complexity: O(2^N).Auxiliary Space: O(2^N).
+class Solution
+{
+public:
+void subset(vector<int>& arr,vector<int>& ans,int N,int ind,int sum){
+    if(ind==N)
+    {
+    ans.push_back(sum);
+    return;
+    }
+      subset(arr,ans,N,ind+1,sum+arr[ind]);
+      subset(arr,ans,N,ind+1,sum);
+}
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        vector<int>ans;
+        subset(arr,ans,N,0,0);
+        return ans;
+    }
+};

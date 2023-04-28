@@ -1,0 +1,55 @@
+/*In the worst case(which rarely happens), the unordered_map takes O(N) to find an element. 
+In that case, the time complexity will be O(N2). If we use map instead of unordered_map, 
+the time complexity will be O(N*logN) as the map data structure takes logN time to find
+an element.Space complexity=O(N)*/
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int,int>a;
+    vector<int>v(2);
+    for(int i=0;i<nums.size();i++){
+    if(a.find(target-nums[i])!=a.end()){
+    v[0]=a[target-nums[i]];
+    v[1]=i;
+    break;
+    }
+    a[nums[i]]=i;
+    }
+    return v;
+    }
+};
+<------------------------------------------------------------------------------------------------>
+/*Using Two pointer Approach.Time complexity=O(N*logN).Space Complexity=O(N)*/
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+   // Vector to store element
+    // with respective present index
+    vector<pair<int, int> > vp;
+  
+    // Inserting element in pair vector
+    // to keep track of previous indexes
+    for (int i = 0; i < nums.size(); ++i) {
+        vp.push_back(make_pair(nums[i], i));
+    }
+  
+    // Sorting pair vector
+    sort(vp.begin(), vp.end());
+    sort(nums.begin(),nums.end());
+    vector<int>v(2);
+   int left=0,right=nums.size()-1;
+   while(left<right){
+   if(nums[left]+nums[right]==target)
+   {
+   v[0]=vp[left].second;;
+   v[1]=vp[right].second;
+   break;
+   }
+   else if(nums[left]+nums[right]>target)
+   right--;
+   else if(nums[left]+nums[right]<target)
+   left++;
+   }
+    return v;
+    }
+};
