@@ -1,0 +1,27 @@
+/*Time Complexity:O(N).Space Complexity:O(N)*/
+class Solution {
+public:
+   stack<string>st;
+   string str="",ans;
+    string reverseWords(string s) {
+        for(int i=0;i<s.size();i++){
+        if(s[i]==' ' && i>0 && s[i-1]!=' ')
+        {
+        st.push(str);
+        str="";
+        continue;
+        }
+        if(s[i]!=' ')
+        str=str+s[i];
+        }
+        if(str!="")
+        st.push(str);
+        ans=st.top();
+        st.pop();
+        while(!st.empty()){
+        ans=ans+" "+st.top();
+        st.pop();
+        }
+        return ans;
+    }
+};

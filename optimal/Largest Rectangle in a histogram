@@ -1,0 +1,47 @@
+/*The time complexity of the given solution is O(n), where n is the size of the input vector. This
+is because each element is pushed and popped from the stack at most once, and each operation takes 
+O(1) time.
+The space complexity of the given solution is O(n). This is because the algorithm uses a stack and 
+two additional vectors to store the left and right smaller indices. The size of the stack can be
+atmost n, and each of the additional vectors also has size n. Therefore, the overall space complexity
+is O(n).*/
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> s;
+        vector<int> leftsmall(heights.size(), -1);
+        vector<int> rightsmall(heights.size(), heights.size());
+        
+        for(int i = 0; i < heights.size(); i++) {
+            while(!s.empty() && heights[s.top()] >= heights[i]) {
+                s.pop();
+            }
+            if(!s.empty()) {
+                leftsmall[i] = s.top();
+            }
+            s.push(i);
+        }
+        
+        while(!s.empty()) {
+            s.pop();
+        }
+        
+        for(int i = heights.size() - 1; i >= 0; i--) {
+            while(!s.empty() && heights[s.top()] >= heights[i]) {
+                s.pop();
+            }
+            if(!s.empty()) {
+                rightsmall[i] = s.top();
+            }
+            s.push(i);
+        }
+        
+        int maxArea = 0;
+        for(int i = 0; i < heights.size(); i++) {
+            int area = heights[i] * (rightsmall[i] - leftsmall[i]-1);
+            maxArea = max(maxArea, area);
+        }
+        
+        return maxArea;
+    }
+};

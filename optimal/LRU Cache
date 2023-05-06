@@ -1,0 +1,41 @@
+/*The time complexity of the LRUCache class implementation is O(1) for both get() and put() 
+operations, since they only involve simple operations like hash table lookups, list insertions 
+and deletions, and basic arithmetic operations.
+The space complexity of the LRUCache class implementation is O(capacity) since the cache can hold
+ a maximum of capacity key-value pairs. The space used by the hash table and the list is proportional 
+ to the size of the cache, which is at most capacity.*/
+class LRUCache {
+public:
+    list<pair<int,int>> l;
+        unordered_map<int,list<pair<int, int>>::iterator> m;
+        int size;
+        LRUCache(int capacity)
+        {
+            size=capacity;
+        }
+        int get(int key)
+        {
+            if(m.find(key)==m.end())
+                return -1;
+            l.splice(l.begin(),l,m[key]);
+            return m[key]->second;
+        }
+        void put(int key, int value)
+        {
+            if(m.find(key)!=m.end())
+            {
+                l.splice(l.begin(),l,m[key]);
+                m[key]->second=value;
+                return;
+            }
+            if(l.size()==size)
+            {
+                auto d_key=l.back().first;
+                l.pop_back();
+                m.erase(d_key);
+            }
+            l.push_front({key,value});
+            m[key]=l.begin();
+    }
+};
+

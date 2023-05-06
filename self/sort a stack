@@ -1,0 +1,30 @@
+/*Time complexity: O(n^2)
+Auxiliary Space: O(n)*/
+#include <stack>
+
+void sortst(std::stack<int> &stack, std::stack<int> &st){
+    if(stack.empty())
+        return;
+    if(st.empty() || stack.top() <= st.top())
+        st.push(stack.top()), stack.pop();
+    else{
+        int x = stack.top();
+        stack.pop();
+        while(!st.empty() && st.top() < x){
+            stack.push(st.top());
+            st.pop();
+        }
+        st.push(x);
+    }
+    sortst(stack,st);
+}
+
+void sortStack(std::stack<int> &stack)
+{
+    std::stack<int> st;
+    sortst(stack,st);
+    while(!st.empty()){
+	stack.push(st.top());
+	st.pop();
+	}
+}

@@ -1,0 +1,33 @@
+/*Time complexity: The time complexity of the next() function is O(1) on average as we are using a
+stack to keep track of the previous prices and their spans. In the worst case, where all the prices
+are in decreasing order, we need to traverse through all the prices, so the time complexity would
+be O(N) for N number of calls to next().
+Space complexity: The space complexity of the StockSpanner class is O(N), where N is the number of 
+calls to the next() function. This is because we are using a stack to store the prices and their 
+spans. However, in the worst case, if all the prices are in increasing order, the stack size would
+ be equal to N, resulting in a space complexity of O(N).*/
+ class StockSpanner {
+public:
+stack<pair<int,int>>s;
+int x=0;
+    StockSpanner() {
+        
+    }
+    
+    int next(int price) {
+        while(!s.empty() && s.top().first<=price){
+            x=x+s.top().second;
+            s.pop();
+            }
+        x=x+1;
+        s.push({price,x});
+        x=0;
+        return s.top().second;
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */

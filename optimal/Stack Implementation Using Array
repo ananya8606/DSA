@@ -1,0 +1,58 @@
+#include <bits/stdc++.h> 
+// Stack class.
+class Stack {
+    
+private:
+int* stack;
+int t;
+int capacity;
+public:
+   Stack(int capacity){
+     stack=new int[capacity];
+     t=-1;
+     this->capacity=capacity;
+   }
+
+
+    void push(int num) {
+        // Write your code here.
+        if(t<capacity-1)
+        stack[++t]=num;
+    }
+
+    int pop() {
+        // Write your code here.
+        if (t >= 0) {
+            int x=stack[t];
+            t--;
+            return x;
+        }
+        else
+        return -1;
+    }
+    
+    int top() {
+        // Write your code here.
+         if(t>=0)
+        return stack[t];
+        else
+        return -1;
+    }
+    
+    int isEmpty() {
+        // Write your code here.
+        if(t>=0)
+        return 0;
+        else
+        return 1;
+    }
+    
+    int isFull() {
+        // Write your code here.
+         if(t>=capacity)
+        return 1;
+        else
+        return 0;
+    }
+    
+};

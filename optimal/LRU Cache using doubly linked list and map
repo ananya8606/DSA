@@ -1,0 +1,82 @@
+/*The time complexity of the get() and put() operations in the LRUCache class implemented using a 
+doubly linked list and an std::map are:
+get(key): O(1) on average, as the std::map provides constant-time lookup and insertion, and the 
+doubly linked list provides constant-time removal and insertion at the head of the list.
+put(key, value): O(1) on average, as the std::map provides constant-time lookup and insertion, and 
+the doubly linked list provides constant-time removal and insertion at the head of the list.
+The space complexity of the LRUCache class implemented using a doubly linked list and an std::map is
+O(n), where n is the capacity of the cache. The doubly linked list and the std::map both use extra
+space proportional to the number of items in the cache.*/
+class LRUCache {
+public:
+class Node{
+    public:
+    Node* prev;
+    Node* next;
+    int key;
+    int val;
+    Node(int _key,int _val){
+        key=_key;
+        val=_val;
+    }
+};
+Node* head=new Node(-1,-1);
+Node* tail=new Node(-1,-1);
+map<int,Node*>m;
+int size;
+    LRUCache(int capacity) {
+        size=capacity;
+        head->next=tail;
+        tail->prev=head;
+    }
+
+    void addNode(Node* newNode){
+    Node* temp=head->next;
+    newNode->next=temp;
+    newNode->prev=head;
+    head->next=newNode;
+    temp->prev=newNode;
+    }
+
+    void deleteNode(Node* delNode){
+    Node* delPrev=delNode->prev;
+    Node* delNext=delNode->next;
+    delPrev->next=delNext;
+    delNext->prev=delPrev;
+    }
+
+    int get(int key) {
+        if(m.find(key)!=m.end())
+        {
+        Node* resNode=m[key];
+        int res=resNode->val;
+        m.erase(key);
+        deleteNode(resNode);
+        addNode(resNode);
+        m[key]=head->next;
+        return res;
+        }
+        return -1;
+    }
+    
+    void put(int key, int value) {
+        if(m.find(key)!=m.end()){
+            Node* x=m[key];
+            m.erase(key);
+            deleteNode(x);
+        }
+        if(m.size()==size){
+            m.erase(tail->prev->key);
+            deleteNode(tail->prev);
+        }
+        addNode(new Node(key,value));
+        m[key]=head->next;
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */

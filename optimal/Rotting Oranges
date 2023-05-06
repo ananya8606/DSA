@@ -1,0 +1,64 @@
+/*Time complexity: 4*O(N*M), where N is the number of rows and M is the number of columns in the grid.
+ Worst-case – We will be making each fresh orange rotten in the grid and for each rotten orange will 
+ check in 4 directions.
+Space Complexity: O(N*N)
+Reason: worst-case –  If all oranges are Rotten, we will end up pushing all rotten oranges into 
+the Queue data structure.*/
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int m = 0;
+        queue<pair<int, int>> rotten; // queue to store rotten oranges
+        int rows = grid.size();
+        int cols = grid[0].size();
+        
+        // add all initially rotten oranges to the queue
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 2) {
+                    rotten.push({i, j});
+                }
+            }
+        }
+        
+        // simulate rotting process using BFS
+        while (!rotten.empty()) {
+            int n = rotten.size(); // number of oranges in the current minute
+            for (int i = 0; i < n; i++) {
+                int x = rotten.front().first;
+                int y = rotten.front().second;
+                rotten.pop();
+                if (x > 0 && grid[x-1][y] == 1) { // check top
+                    grid[x-1][y] = 2;
+                    rotten.push({x-1, y});
+                }
+                if (x < rows-1 && grid[x+1][y] == 1) { // check bottom
+                    grid[x+1][y] = 2;
+                    rotten.push({x+1, y});
+                }
+                if (y > 0 && grid[x][y-1] == 1) { // check left
+                    grid[x][y-1] = 2;
+                    rotten.push({x, y-1});
+                }
+                if (y < cols-1 && grid[x][y+1] == 1) { // check right
+                    grid[x][y+1] = 2;
+                    rotten.push({x, y+1});
+                }
+            }
+            if (!rotten.empty()) {
+                m++; // increment minutes only if there are more oranges to rot
+            }
+        }
+        
+        // check if any fresh oranges remain
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 1) {
+                    return -1; // return -1 if there are fresh oranges left
+                }
+            }
+        }
+        
+        return m;
+    }
+};

@@ -1,0 +1,99 @@
+/*The time complexity of the get and put operations in this LFU cache implementation is O(1), which
+means they can be performed in constant time regardless of the size of the cache.
+The space complexity of this implementation is also O(capacity), where capacity is the maximum number
+of key-value pairs that the cache can hold. */
+class LFUCache {
+private:
+    struct Node {
+        int key, val, f;
+        Node *prev, *next;
+        Node() : key (0), val(0), prev(nullptr), next(nullptr) {}
+        Node(int _k, int _v, int _f) : key (_k), val(_v), f(_f) {}
+    };
+
+    unordered_map<int, Node*> freq;
+    unordered_map<int, Node*> mp;
+    int n;
+    int fre;
+
+    void addFreq (int f)
+    {
+        Node *p=new Node;
+        Node *q=new Node;
+        p->prev=q; p->next=q;
+        q->prev=p; q->next=p;
+        freq[f]=p;
+    }
+
+    void remove (Node *curr)
+    {
+        curr->prev->next=curr->next;
+        curr->next->prev=curr->prev;
+    }
+    void add (Node *curr, int fre)
+    {
+        if (freq.find(fre)==freq.end()) addFreq(fre);
+
+        Node *head=freq[fre];
+        curr->prev=head;
+        curr->next=head->next;
+        head->next->prev=curr;
+        head->next=curr;
+    }
+    void increaseFreq(Node *curr)
+    {
+        remove(curr);
+        add(curr, curr->f+1);
+        if (fre==curr->f)
+        {
+            Node *head=freq[curr->f];
+            if (head->prev==head->next) fre++;
+        }
+        curr->f++;
+    }
+public:
+    LFUCache(int capacity) {
+        freq.clear();
+        mp.clear();
+        n=capacity;
+    }
+    
+    int get(int key) {
+        auto it=mp.find(key);
+        if (it==mp.end()) return -1;
+
+        increaseFreq(it->second);
+        return it->second->val;
+    }
+    
+    void put(int key, int val) {
+        auto it=mp.find(key);
+        if (it!=mp.end())
+        {
+            increaseFreq(it->second);
+            it->second->val=val;
+            return;
+        }
+
+        if (n==0)
+        {
+            Node *head=freq[fre];
+            Node *curr=head->prev->prev;
+            remove (curr);
+            mp.erase(curr->key);
+        }
+        else n--;
+
+        fre=1;
+        Node *t=new Node (key, val, 1);
+        add(t, 1);
+        mp[key]=t;
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */

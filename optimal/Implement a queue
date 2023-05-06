@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Queue {
+    int* queue;
+    int frontIndex;
+    int rearIndex;
+    int size;
+public:
+    Queue() {
+        size=5000;
+        queue = new int[size];
+        frontIndex = -1;
+        rearIndex = -1;
+    }
+    
+    void enqueue(int data) {
+        if(rearIndex == size-1) {
+            cout<<"Queue is full"<<endl;
+            return;
+        }
+        if(frontIndex == -1) frontIndex = 0;
+        rearIndex++;
+        queue[rearIndex] = data;
+    }
+    
+    int dequeue() {
+        if(frontIndex == -1 || frontIndex > rearIndex) {
+            return -1;
+        }
+        int data = queue[frontIndex];
+        frontIndex++;
+        return data;
+    }
+    
+    int front() {
+        if(frontIndex == -1 || frontIndex > rearIndex) {
+            return -1;
+        }
+        return queue[frontIndex];
+    }
+    
+    bool isEmpty() {
+        if(frontIndex == -1 || frontIndex > rearIndex) {
+            return true;
+        }
+        return false;
+    }
+};
