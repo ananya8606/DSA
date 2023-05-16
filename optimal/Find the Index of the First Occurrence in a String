@@ -1,0 +1,189 @@
+/*Using Rabin Karp Algorithm:
+Overall, the solution has a time complexity of O(|A|+|B|) and a space complexity of O(|A|+|B|).*/
+class Solution {
+    int BASE = 1000000;
+public:
+    int strStr(string source,string target){
+        if(source == "" or target == "") return -1;
+        int m = target.size();
+        int power = 1;
+        for(int i = 0;i<m;i++){
+            power = (power*31)%BASE;
+        }
+        int targetCode = 0;
+        for(int i = 0;i<m;i++){
+            targetCode = (targetCode*31+target[i])%BASE;
+        }
+        int hashCode = 0;
+        for(int i = 0;i<source.size();i++){
+            hashCode = (hashCode*31 + source[i])%BASE;
+            if(i<m-1) continue;
+            if(i>=m){
+                hashCode = (hashCode-source[i-m]*power)%BASE;
+            }
+            if(hashCode<0)
+                hashCode+=BASE;
+            if(hashCode == targetCode){
+                if(source.substr(i-m+1,m) == target)
+                    return i-m+1;
+            }
+        }
+        return -1;
+    }
+};
+
+/*Using Z algorithm:
+This algorithm finds all occurrences of a pattern in a text in linear time. Let length of text be n 
+and of pattern be m, then total time taken is O(m + n) with linear space complexity. 
+In this algorithm, we construct a Z array.
+For a string str[0..n-1], Z array is of same length as string. An element Z[i] of Z array stores 
+length of the longest substring starting from str[i] which is also a prefix of str[0..n-1]. 
+The first entry of Z array is meaning less as complete string is always prefix of itself. 
+
+Example:
+Index            0   1   2   3   4   5   6   7   8   9  10  11 
+Text             a   a   b   c   a   a   b   x   a   a   a   z
+Z values         X   1   0   0   3   1   0   0   2   2   1   0 
+More Examples:
+str  = "aaaaaa"
+Z[]  = {x, 5, 4, 3, 2, 1}
+
+str = "aabaacd"
+Z[] = {x, 1, 0, 2, 1, 0, 0}
+
+str = "abababab"
+Z[] = {x, 0, 6, 0, 4, 0, 2, 0}
+
+The idea is to concatenate pattern and text, and create a string “P$T” where P is pattern, $ is 
+a special character should not be present in pattern and text, and T is text. Build the Z array for 
+concatenated string. In Z array, if Z value at any point is equal to pattern length, then pattern is
+present at that point. 
+
+Example:
+Pattern P = "aab",  Text T = "baabaa"
+
+The concatenated string is = "aab$baabaa"
+
+Z array for above concatenated string is {x, 1, 0, 0, 0, 
+                                          3, 1, 0, 2, 1}.
+Since length of pattern is 3, the value 3 in Z array 
+indicates presence of pattern. */
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+class Solution{
+    public:
+int strStr(string haystack, string needle) {
+    int m = needle.length();
+    if (m == 0) {
+        return 0;
+    }
+
+    int n = haystack.length();
+    if (n == 0 || n < m) {
+        return -1;
+    }
+
+    string s = needle + "#" + haystack;
+    n = s.length();
+
+    vector<int> z(n, 0);
+
+    int left = 0, right = 0;
+    for (int i = 1; i < n; i++) {
+        if (i > right) {
+            left = right = i;
+            while (right < n && s[right - left] == s[right]) {
+                right++;
+            }
+            z[i] = right - left;
+            right--;
+        } else {
+            int k = i - left;
+            if (z[k] < right - i + 1) {
+                z[i] = z[k];
+            } else {
+                left = i;
+                while (right < n && s[right - left] == s[right]) {
+                    right++;
+                }
+                z[i] = right - left;
+                right--;
+            }
+        }
+        if (z[i] == m) {
+            return i - m - 1;
+        }
+    }
+
+    return -1;
+}
+};
+
+/*Using KMP Algorithm:
+The time complexity of the KMP algorithm implementation for the given problem is O(n+m), where n is 
+the length of the haystack string and m is the length of the needle string. The worst-case time 
+complexity of this algorithm is the same as the Z algorithm implementation, but in practice, the 
+KMP algorithm has been found to be faster.
+The space complexity of the KMP algorithm implementation is O(m), where m is the length of the needle
+string. This is due to the LPS array that is created and stored in memory.*/
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        int n = haystack.size(), m = needle.size();
+        if (m == 0) {
+            return 0;
+        }
+        vector<int> lps(m, 0);
+        computeLPS(needle, m, lps);
+        int i = 0, j = 0;
+        while (i < n) {
+            if (haystack[i] == needle[j]) {
+                i++;
+                j++;
+            }
+            if (j == m) {
+                return i - j;
+            }
+            else if (i < n && haystack[i] != needle[j]) {
+                if (j != 0) {
+                    j = lps[j - 1];
+                }
+                else {
+                    i++;
+                }
+            }
+        }
+        return -1;
+    }
+private:
+    void computeLPS(string needle, int m, vector<int>& lps) {
+        int len = 0;
+        lps[0] = 0;
+        int i = 1;
+        while (i < m) {
+            if (needle[i] == needle[len]) {
+                len++;
+                lps[i] = len;
+                i++;
+            }
+            else {
+                if (len != 0) {
+                    len = lps[len - 1];
+                }
+                else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+    }
+};

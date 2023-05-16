@@ -1,0 +1,38 @@
+/*the time complexity is O(n) and the space complexity is O(h), where n is the number of nodes and
+ h is the height of the binary tree.*/
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+void  getLeftViewHelper(TreeNode<int> *node,int level,vector<int> &v){
+    if(!node)
+    return;
+    if(level==v.size())
+    v.push_back(node->data);
+    getLeftViewHelper(node->left,level+1,v);
+    getLeftViewHelper(node->right,level+1,v);
+}
+vector<int> getLeftView(TreeNode<int> *root)
+{  
+    //    Write your code here
+    vector<int> v;
+    getLeftViewHelper(root,0,v);
+    return v;
+
+}

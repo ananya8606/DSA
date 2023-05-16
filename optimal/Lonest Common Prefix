@@ -1,0 +1,23 @@
+/*The time complexity of this function is O(mn), where m is the length of the prefix and n is the 
+length of the input array. This is because in the worst case, we need to compare every character 
+of every string in the array.
+The space complexity is O(m), because we only need to store the prefix string.*/
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if (strs.empty()) {
+            return "";
+        }
+        int n = strs.size();
+        string prefix = strs[0];
+        for (int i = 1; i < n; i++) {
+            while (strs[i].find(prefix) != 0) {
+                prefix = prefix.substr(0, prefix.size() - 1);
+                if (prefix.empty()) {
+                    return "";
+                }
+            }
+        }
+        return prefix;
+    }
+};

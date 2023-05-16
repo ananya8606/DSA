@@ -1,0 +1,20 @@
+/* the time complexity of the function is O(n), where n is the length of the input string
+and the space complexity is O(1), constant space.*/
+int minCharsforPalindrome(string str) {     // Write your code here.    
+ int n=str.size();        
+ int t=0;        
+ int e=n-1;        
+ int e2=e;        
+ int count=0;       
+  while(t<e){
+   if (str[t] == str[e]) {
+     t++;
+     e--;
+   } else {
+     count++;
+     t=0;
+     e=--e2;
+   }
+ }
+ return count;
+}

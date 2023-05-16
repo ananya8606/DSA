@@ -1,0 +1,71 @@
+Here's an explanation of finding the longest palindrome in a string using Manacher's algorithm:
+
+```
+string longestPalindrome(string s) 
+```
+This line declares a function called "longestPalindrome" that takes a string "s" as input and returns a string as output.
+
+```
+int n = s.length();
+if (n == 0) return "";
+```
+These lines compute the length of the input string "s" and check if it is zero. If the length is zero, the function returns an empty string as there is no palindrome in an empty string.
+
+```
+string t = "^#";
+for (int i = 0; i < n; i++) {
+    t += s.substr(i, 1) + "#";
+}
+t += "$";
+```
+These lines construct a modified string "t" from the input string "s" by adding special characters "^" and "$" to the beginning and end of the string respectively, and a "#" character after each letter in the string. This modified string is used in Manacher's algorithm to find the longest palindrome in "s".
+
+```
+int m = t.length();
+vector<int> P(m, 0);
+int center = 0, right = 0;
+```
+These lines initialize some variables needed for Manacher's algorithm. "m" is the length of the modified string "t", "P" is a vector of length "m" to store the lengths of palindromes centered at each character in "t", and "center" and "right" are variables used to keep track of the center and right boundary of the palindrome with the maximum right boundary seen so far.
+
+```
+for (int i = 1; i < m - 1; i++) {
+    int mirror = 2 * center - i;
+    if (right > i) {
+        P[i] = min(right - i, P[mirror]); //initializing P[i]
+    }
+       mirror center     i   right
+    A   B      C         B   A     C    D
+    while (t[i + 1 + P[i]] == t[i - 1 - P[i]]) {
+        P[i]++;
+    }
+    if (i + P[i] > right) {
+        center = i;
+        right = i + P[i];
+    }
+}
+```
+(mirror+i)/2=center  => mirror = 2*center-i
+These lines implement Manacher's algorithm to find the length of the longest palindrome in "s". For each character "i" in "t", it first checks if the character is within the right boundary of the palindrome with the maximum right boundary seen so far. If it is, it uses the length of the palindrome centered at the "mirror" of "i" to set an initial value for "P[i]". It then expands the palindrome around "i" by incrementing "P[i]" as long as the characters on either side of "i" match. Finally, it updates the center and right boundary variables if the palindrome centered at "i" has a right boundary farther than the maximum seen so far.
+
+```
+int maxLen = 0, centerIndex = 0;
+for (int i = 1; i < m - 1; i++) {
+    if (P[i] > maxLen) {
+        maxLen = P[i]; //finding maximum P[i]
+        centerIndex = i;
+    }
+}
+```
+These lines find the length and center of the longest palindrome in "s" by iterating through the "P" array and keeping track of the maximum length seen so far and its center index.
+
+```
+int start = (centerIndex - maxLen) / 2;
+return s.substr(start, maxLen);
+```
+These lines use the length and center index of the longest palindrome in "s" to compute the starting index of the palindrome in the original string "s".We are dividing by 2 because in modified string we added # between every character.
+
+
+
+
+
+

@@ -1,0 +1,77 @@
+/*Not optimized:
+Time Complexity: O(N) where N is number of nodes in Binary Tree.
+Auxiliary Space: If we don’t consider the size of the stack for function calls then O(1) otherwise 
+O(h) where h is the height of the tree. */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+ vector<int> v;
+    
+    void preorderTraversalHelper(TreeNode* root) {
+        if (!root) return;
+         v.push_back(root->val);
+        preorderTraversalHelper(root->left);
+        preorderTraversalHelper(root->right);
+    }
+    vector<int> preorderTraversal(TreeNode* root) {
+        preorderTraversalHelper(root);
+        return v;
+    }
+};
+/*Optimized:
+Morris Preorder Traversal
+Time Complexity:O(N)
+Space Complexity:O(1)*/
+/**
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> v;
+    
+    vector<int> preorderTraversal(TreeNode* root) {
+        TreeNode* cur=root;
+        while(cur){
+        if(!cur->left){
+            v.push_back(cur->val);
+            cur=cur->right;
+        }
+        else{
+            TreeNode* prev=cur->left;
+            while(prev->right && prev->right!=cur){
+                prev=prev->right;
+            }
+            if(!prev->right){
+                prev->right=cur;
+                v.push_back(cur->val);
+                cur=cur->left;
+            }
+            else{
+                cur=cur->right;
+                prev->right=NULL;
+            }
+        }
+        }
+        return v;
+    }
+};
+     

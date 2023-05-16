@@ -1,4 +1,4 @@
-/*Time Complexity:O(N).Auxiliary Space:O(N).*/
+/*Implemented using Manacher's Algorithm.Time Complexity:O(N).Auxiliary Space:O(N).*/
 class Solution {
 public:
     string longestPalindrome(string s) {

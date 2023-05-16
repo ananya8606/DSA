@@ -1,0 +1,59 @@
+/*This is a C++ solution to the "Repeated String Match" problem that uses Rabin-Karp algorithm for 
+string matching. The Rabin-Karp algorithm is used to check if the string B is a substring of the 
+concatenated string A. 
+The solution first checks if A and B are the same, in which case the answer is 1. Otherwise, it 
+repeatedly concatenates A to itself until the length of the concatenated string is greater than or
+equal to the length of B. If the concatenated string matches B, the answer is the number of times
+A was concatenated. If not, the Rabin-Karp algorithm is used to check if B is a substring of the 
+concatenated string with one more repetition of A. If so, the answer is the number of times A was
+concatenated plus one. Otherwise, the answer is -1.
+The private member variable BASE is used as the base for the hash function. The Rabin-Karp algorithm 
+hashes the substrings of the concatenated string and the target string B and compares the hash values
+to determine if they match. The hash function used here is a simple one where each character is 
+treated as a digit in base 31 and the hash value is calculated using Horner's rule.
+Overall, the solution has a time complexity of O(|A|+|B|) and a space complexity of O(|A|+|B|).*/
+class Solution {
+private:
+    int BASE = 1000000;
+public:
+    int repeatedStringMatch(string A, string B) {
+        if(A == B) return 1;
+        int count = 1;
+        string source = A;
+        while(source.size() < B.size()){
+            count++;
+            source+=A;
+        }
+        if(source == B) return count;
+        if(Rabin_Karp(source,B) != -1) return count;
+        if(Rabin_Karp(source+A,B) != -1) return count+1;
+        return -1;
+    }
+    int Rabin_Karp(string source, string target){
+        if(source == "" or target == "") return -1;
+        int m = target.size();
+        int power = 1;
+        for(int i = 0;i<m;i++){
+            power = (power*31)%BASE;
+        }
+        int targetCode = 0;
+        for(int i = 0;i<m;i++){
+            targetCode = (targetCode*31+target[i])%BASE;
+        }
+        int hashCode = 0;
+        for(int i = 0;i<source.size();i++){
+            hashCode = (hashCode*31 + source[i])%BASE;
+            if(i<m-1) continue;
+            if(i>=m){
+                hashCode = (hashCode-source[i-m]*power)%BASE;
+            }
+            if(hashCode<0)
+                hashCode+=BASE;
+            if(hashCode == targetCode){
+                if(source.substr(i-m+1,m) == target)
+                    return i-m+1;
+            }
+        }
+        return -1;
+    }
+};
