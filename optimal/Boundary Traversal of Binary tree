@@ -1,0 +1,86 @@
+/*Time Complexity: O(N)
+Space Complexity: O(N)*/
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the Binary Tree node structure:
+    
+    template <typename T>
+    class TreeNode {
+        public :
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+
+        ~TreeNode() {
+            if(left)
+                delete left;
+            if(right)
+                delete right;
+        }
+    };
+
+************************************************************/
+void inorder(TreeNode<int>* root,vector<int> &a){
+    if(!root)
+    return;
+    if(!root->left && !root->right)
+    a.push_back(root->data);
+    inorder(root->left,a);
+    inorder(root->right,a);
+    return;
+}
+vector<int> traverseBoundary(TreeNode<int>* root){
+    // Write your code here.
+    vector<int>a;
+    if(!root)
+    return a;
+    if(!root->left && !root->right)
+    return {root->data};
+    a.push_back(root->data);
+    TreeNode<int>* cur=root;
+    if(cur->left){
+    while(cur->left || cur->right){
+    if(cur->left)   
+    {
+    a.push_back(cur->left->data);
+    cur=cur->left;
+    } 
+    else 
+    {
+    a.push_back(cur->right->data);
+    cur = cur->right;
+    }
+    }
+    a.pop_back();
+    }
+    inorder(root,a);
+    TreeNode<int>* cur1=root;
+    vector<int>s;
+    if(cur1->right){
+    while(cur1->right || cur1->left){
+    if(cur1->right)   
+    {
+    s.push_back(cur1->right->data);
+    cur1=cur1->right;
+    } 
+    else 
+    {
+    s.push_back(cur1->left->data);
+    cur1 = cur1->left;
+    }
+    }
+    s.pop_back();
+    while(!s.empty()){
+    a.push_back(s[s.size()-1]);
+    s.pop_back();
+    }
+    }
+    return a;
+}

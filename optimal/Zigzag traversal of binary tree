@@ -1,0 +1,123 @@
+ /*The time complexity of the solution is O(N), and the space complexity is also O(N), where N is the 
+ number of nodes in the binary tree.*/
+ /*Using Queue*/
+ /**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        queue<TreeNode*>q;
+        vector<vector<int>>ans;
+        if(!root)
+        return ans;
+        q.push(root);
+        int lidx=0;
+        while(!q.empty()){
+        int level=q.size();
+        int idx;
+        vector<int>s(level);
+        for(int i=0;i<level;i++)
+        {
+        TreeNode* cur=q.front();
+        q.pop();
+        if(lidx)
+        idx=level-i-1;
+        else
+        idx=i;
+        s[idx]=cur->val;
+        if(cur->left)
+        {
+        q.push(cur->left);
+        }
+        if(cur->right)
+        {
+        q.push(cur->right);
+        }
+        }
+        lidx=!lidx;
+        if(!s.empty())
+        ans.push_back(s);
+        }
+        return ans;
+    }
+};
+/*Using Dequeue*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        deque<TreeNode*>q;
+        vector<int>s;
+        vector<vector<int>>ans;
+        if(!root)
+        return ans;
+        q.push_front(root);
+        s.push_back(root->val);
+        ans.push_back(s);
+        s.clear();
+        int lidx=1;
+        while(!q.empty()){
+            int level=q.size();
+            if(lidx%2==0)
+            {
+                for(int i=0;i<level;i++)
+                {
+                TreeNode* cur=q.front();
+                q.pop_front();
+                if(cur->left)
+                {
+                q.push_back(cur->left);
+                s.push_back(cur->left->val);
+                }
+                if(cur->right)
+                {
+                q.push_back(cur->right);
+                s.push_back(cur->right->val);
+                }
+            }
+            lidx++;
+            }
+            else
+            {
+                for(int i=0;i<level;i++){
+                TreeNode* cur=q.back();
+                q.pop_back();
+                if(cur->right)
+                {
+                q.push_front(cur->right);
+                s.push_back(cur->right->val);
+                }
+                if(cur->left)
+                {
+                q.push_front(cur->left);
+                s.push_back(cur->left->val); 
+                }
+            } 
+            lidx++;
+            }
+            if(!s.empty())
+            ans.push_back(s);
+            s.clear();
+        }
+        return ans;
+    }
+};

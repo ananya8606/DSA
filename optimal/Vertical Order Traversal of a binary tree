@@ -1,0 +1,38 @@
+/*Time Complexity: O(N*logN*logN*logN)
+Space Complexity: O(N)*/
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int,map<int,multiset<int>>> m; 
+        stack<pair<TreeNode*,pair<int,int>>> s;
+        vector<vector<int>> v;
+
+        s.push({root,{0,0}});
+
+        while (!s.empty()) {
+            auto it = s.top();
+            s.pop();
+            TreeNode* x = it.first;
+            int vlevel = it.second.first;
+            int hlevel = it.second.second;
+            m[vlevel][hlevel].insert(x->val);
+            if (x->left) {
+                s.push({x->left,{vlevel-1,hlevel + 1}});
+            }
+
+            if (x->right) {
+                s.push({x->right,{vlevel+1,hlevel + 1}});
+            }
+        }
+
+        for (auto it:m) {
+        vector<int>a;
+        for(auto j:it.second){
+            a.insert(a.end(),j.second.begin(),j.second.end());
+        }
+        v.push_back(a);
+        }
+
+        return v;
+    }
+};

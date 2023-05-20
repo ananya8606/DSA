@@ -1,0 +1,51 @@
+/*The time complexity is O(n), where n is the number of nodes in the binary tree.
+This is because each node is visited exactly once during the construction process.
+The space complexity of the modified code is O(n), where n is the number of nodes in the binary tree. 
+This is because the recursive calls use additional space on the call stack. The maximum depth of the 
+call stack is equal to the height of the binary tree, which can be O(n) in the worst case for a skewed
+ tree.*/
+ /**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution {
+    void fillmap(map<int, int>& mp, vector<int>& inorder, int n) {
+        for (int i = 0; i < n; i++) {
+            mp[inorder[i]] = i;
+        }
+    }
+
+    TreeNode* solve(vector<int>& pre, vector<int>& in, int preStart, int inStart, int inEnd, int preEnd, map<int, int>& mp) {
+        if (preStart > preEnd || inStart > inEnd) {
+            return nullptr;
+        }
+
+        int element = pre[preStart];
+        TreeNode* root = new TreeNode(element);
+
+        int position = mp[element];
+        int leftSubtreeSize = position - inStart;
+
+        root->left = solve(pre, in, preStart + 1, inStart, position - 1, preStart + leftSubtreeSize, mp);
+        root->right = solve(pre, in, preStart + leftSubtreeSize + 1, position + 1, inEnd, preEnd, mp);
+
+        return root;
+    }
+
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int n = inorder.size();
+        map<int, int> mp;
+        fillmap(mp, inorder, n);
+
+        return solve(preorder, inorder, 0, 0, n - 1, n - 1, mp);
+    }
+};
