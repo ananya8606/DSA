@@ -1,0 +1,48 @@
+/**Time Complexity=O(h),  where ‘h’ is the height of the BST tree.
+In the worst case, we may have to travel from the ‘root’ to the deepest leaf node. If a tree is skew 
+then time complexity becomes O( N ). Hence, the overall time complexity is O(h).
+Space Complexity=O(1)*/
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the TreeNode class structure:
+
+    class BinaryTreeNode {
+    public:
+        T data;
+        BinaryTreeNode<T> *left;
+        BinaryTreeNode<T> *right;
+        
+        BinaryTreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+        
+        ~BinaryTreeNode() {
+            if (left) {
+              delete left;
+            }
+            if (right) {
+              delete right;
+            }
+        }
+    };
+
+************************************************************/
+
+int findCeil(BinaryTreeNode<int> *node, int x){
+    // Write your code here.
+    int ceilvalue=-1;
+    while(node!=NULL){
+        if(node->data==x)
+        return x;
+        else if(node->data<x)
+        node=node->right;
+        else{
+        ceilvalue=node->data;
+        node=node->left;
+        }  
+    }
+    return ceilvalue;
+}

@@ -1,0 +1,44 @@
+/*Time Complexity=O(h),  where ‘h’ is the height of the BST tree.
+In the worst case, we may have to travel from the ‘root’ to the deepest leaf node. If a tree is skew 
+then time complexity becomes O( N ). Hence, the overall time complexity is O(h).
+Space Complexity=O(1)*/
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T val;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T val) {
+            this->val = val;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+
+int floorInBST(TreeNode<int> *root, int X) {
+    int floorValue = -1;
+
+    while (root != NULL) {
+        if (root->val == X) {
+            // Found the exact value, so it is the floor value
+            return root->val;
+        } else if (root->val > X) {
+            // The current node's value is greater than X, move to the left subtree
+            root = root->left;
+        } else {
+            // The current node's value is less than X, update the floor value and move to the right subtree
+            floorValue = root->val;
+            root = root->right;
+        }
+    }
+
+    return floorValue;
+}

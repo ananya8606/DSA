@@ -1,0 +1,31 @@
+/*The time complexity is O(log N), where N is the number of nodes in the binary 
+search tree. This is because at each step, we either move to the left or right subtree, effectively 
+reducing the search space by half. In the worst case, we need to traverse the height of the binary 
+search tree, which is logarithmic with respect to the number of nodes.
+The space complexity is O(log N) as well, corresponding to the space used by the function call stack 
+during the recursive calls. In the worst case, the height of the binary search tree is the same as 
+the number of nodes, resulting in logarithmic space complexity.*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (!root)
+            return NULL;
+
+        if (root->val > p->val && root->val > q->val)
+            return lowestCommonAncestor(root->left, p, q);
+        else if (root->val < p->val && root->val < q->val)
+            return lowestCommonAncestor(root->right, p, q);
+        else
+            return root;
+    }
+};

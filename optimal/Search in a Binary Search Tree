@@ -1,0 +1,38 @@
+/*The time complexity of the searchBST function in the given code is O(log n) in the average case 
+and O(n) in the worst case, where n is the number of nodes in the binary tree. This is because the 
+function performs a binary search in a binary search tree (BST). In the average case, each comparison 
+divides the search space in half, leading to a logarithmic time complexity. However, in the worst 
+case, when the tree is skewed and resembles a linked list, each comparison may only eliminate one 
+node, resulting in a linear time complexity.
+The space complexity of the searchBST function is O(h), where h is the height of the binary tree. In 
+the worst case, when the tree is skewed and resembles a linked list, the height of the tree is n, 
+resulting in O(n) space complexity. In the average case, when the tree is balanced, the height is 
+approximately log n, resulting in O(log n) space complexity due to the recursive function calls.
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        if(!root)
+        return NULL;
+        if(root->val==val)
+        return root;
+        if(root->val<val && root->right){
+        return searchBST(root->right,val);
+        }
+        if(root->val>val && root->left){
+        return searchBST(root->left,val);
+        }
+        return NULL;
+    }
+};
