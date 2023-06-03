@@ -1,0 +1,47 @@
+/*The time complexity of the provided solution is O(n * m), where n is the number of rows in the grid 
+and m is the number of columns.
+The space complexity of the solution is O(n * m) as well. */
+class Solution {
+public:
+    void bfs(int i, int j, vector<vector<char>>& grid, vector<vector<bool>>& vis) {
+        queue<pair<int, int>> q;
+        vis[i][j] = true;
+        q.push({i, j});
+        int n = grid.size();
+        int m = grid[0].size();
+        while (!q.empty()) {
+            int row = q.front().first;
+            int col = q.front().second;
+            q.pop();
+            for (int a = -1; a <= 1; a++) {
+                for (int b = -1; b <= 1; b++) {
+                    if(a==0 || b==0)//if you consider only horizontal and vertical directions
+                    {
+                    int x = row + a;
+                    int y = col + b;
+                    if (x >= 0 && x < n && y >= 0 && y < m && grid[x][y] == '1' && !vis[x][y]) {
+                        vis[x][y] = true;
+                        q.push({x, y});
+                    }
+                    }
+                }
+            }
+        }
+    }
+    
+    int numIslands(vector<vector<char>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<bool>> vis(n, vector<bool>(m, false));
+        int c = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (!vis[i][j] && grid[i][j] == '1') {
+                    c++;
+                    bfs(i, j, grid, vis);
+                }
+            }
+        }
+        return c;
+    }
+};

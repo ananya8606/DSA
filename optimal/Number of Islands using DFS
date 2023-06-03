@@ -1,0 +1,45 @@
+/*Time Complexity: O(N x M x log(N x M)) + O(NxMx4) ~ O(N x M), For the worst case, assuming all the 
+pieces as land, the DFS function will be called for (N x M) nodes, and for every node, we are 
+traversing for 4 neighbors, it will take O(N x M x 4) time. Set at max will store the complete grid, 
+so it takes log(N x M) time.
+Space Complexity ~ O(N x M), O(N x M) for the visited array and set takes up N x M locations at max.*/
+
+/*we are considering only distinct islands not similar.For considering all islands we can ignore 
+  storing in set.We can simply use a counter similar to as we used in bfs implementation.*/
+   class Solution {
+public:
+    void dfs(int i, int j, vector<vector<char>>& grid, vector<vector<bool>>& vis, vector<pair<int,int>>& ans, int i0, int j0) {
+        vis[i][j] = true;
+        ans.push_back({i - i0, j - j0});
+        int n = grid.size();
+        int m = grid[0].size();
+        for (int a = -1; a <= 1; a++) {
+            for (int b = -1; b <= 1; b++) {
+                if (a == 0 || b == 0) {
+                    int x = i + a;
+                    int y = j + b;
+                    if (x >= 0 && x < n && y >= 0 && y < m && grid[x][y] == '1' && !vis[x][y]) {
+                        dfs(x, y, grid, vis, ans, i0, j0);
+                    }
+                }
+            }
+        }
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<bool>> vis(n, vector<bool>(m, false));
+        set<vector<pair<int,int>>> s;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (!vis[i][j] && grid[i][j] == '1') {
+                    vector<pair<int,int>> a;
+                    dfs(i, j, grid, vis, a, i, j);
+                    s.insert(a);
+                }
+            }
+        }
+        return s.size();
+    }
+};

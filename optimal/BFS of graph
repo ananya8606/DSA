@@ -1,0 +1,32 @@
+/*The function performs a breadth-first search (BFS) traversal of the graph. In the worst case, it 
+visits each vertex and each edge once, resulting in a time complexity of O(V + E).
+The space complexity of the function is O(V), where V is the number of vertices. */
+class Solution {
+  public:
+    // Function to return Breadth First Traversal of given graph.
+    vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+        // Code here
+        vector<int>x;
+        queue<int>q;
+        unordered_map<int,bool>s;
+        for(int i=0;i<V;i++)
+        s[i]=false;
+        q.push(0);
+        while(!q.empty()){
+            int c=q.front();
+            q.pop();
+            if(s[c])
+            continue;
+            s[c]=true;
+            x.push_back(c);
+            for(int i=0;i<adj[c].size();i++)
+            {
+                if(!s[adj[c][i]])
+                {
+                    q.push(adj[c][i]);
+                }
+            }
+        }
+        return x;
+    }
+};

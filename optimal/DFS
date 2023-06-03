@@ -1,0 +1,35 @@
+/* the function performs a depth-first search traversal of the graph. In the worst case, it visits 
+each vertex and each edge once, resulting in a time complexity of O(V + E).
+The space complexity of the function is O(V), where V is the number of vertices.*/
+class Solution {
+  public:
+    // Function to return a list containing the DFS traversal of the graph.
+    vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+        // Code here
+        unordered_map<int,bool>q;
+        vector<int>x;
+        for(int i=0;i<V;i++)
+        q[i]=false;
+         for(int i=0;i<V;i++)
+         {
+         if(!q[i])
+         dfshelper(i,adj,q,x);
+         }
+         return x;
+    }
+    
+void dfshelper(int i,vector<int> adj[],unordered_map<int,bool> &q,vector<int> &x){
+    if(q[i]==true){
+    return;
+    }
+    q[i]=true;
+    x.push_back(i);
+    for(int j=0;j<adj[i].size();j++)
+    {
+    if(!q[adj[i][j]]){
+    dfshelper(adj[i][j],adj,q,x);
+    }
+    }
+    return;
+}
+};

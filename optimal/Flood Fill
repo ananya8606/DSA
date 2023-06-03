@@ -1,0 +1,26 @@
+/*Time Complexity: O(m*n)
+Auxiliary Space: O(m*n), due to the recursive call stack.*/
+class Solution {
+private:
+    void dfs(int n,int m,int sr, int sc,int iniColor,int newcolor,int delrow[],int delcol[],vector<vector<int>> &ans){
+                  ans[sr][sc]=newcolor;
+                  for(int i=0;i<4;i++){
+                        int nrow=sr+delrow[i];
+                        int ncol=sc+delcol[i];
+                        if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && ans[nrow][ncol]==iniColor && ans[nrow][ncol]!=newcolor){
+                              dfs(n,m,nrow,ncol,iniColor,newcolor,delrow,delcol,ans);
+                          }
+                  }
+              }
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+         int iniColor=image[sr][sc];
+         int n=image.size();
+         int m=image[0].size();
+         vector<vector<int>> ans =image; 
+         int delrow[]={-1,0,1,0};
+         int delcol[]={0,1,0,-1};
+         dfs(n,m,sr,sc,iniColor,color,delrow,delcol,ans);
+         return ans;
+    }
+};

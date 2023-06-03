@@ -1,0 +1,36 @@
+/*The TC of the code is O(n*log(k)) for initialization and O(log(k)) for each add() operation.
+The space complexity is O(k).*/
+#include <queue>
+class KthLargest {
+public:
+    priority_queue<int, vector<int>, greater<int>> m;
+    int k;
+
+    KthLargest(int k, vector<int>& nums) {
+        this->k = k;
+        for (int num : nums) {
+            if (m.size() < k) {
+                m.push(num);
+            } else if (num > m.top()) {
+                m.pop();
+                m.push(num);
+            }
+        }
+    }
+
+    int add(int val) {
+        if (m.size() < k) {
+            m.push(val);
+        } else if (val > m.top()) {
+            m.pop();
+            m.push(val);
+        }
+        return m.top();
+    }
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * KthLargest* obj = new KthLargest(k, nums);
+ * int param_1 = obj->add(val);
+ */
