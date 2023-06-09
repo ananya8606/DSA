@@ -1,0 +1,47 @@
+/*Time Complexity: O(N) 
+Auxiliary Space: O(1).
+Approach: The problem can be solved using the Greedy technique. Follow the steps below to solve the 
+problem:
+1. Initialize an array, say res[], to store the required substrings.
+2. Initialize two arrays, say l[] and r[], to store the leftmost and rightmost indices of all 
+possible characters of the given string respectively.
+3. Traverse the string and store the leftmost and rightmost index of all possible characters of the 
+given string.
+4. Traverse the string using the variable i and check if i is the leftmost index of s[i], check if 
+the substring starting from the ith position consisting of all occurrences of s[i] does not overlap 
+with any of the substrings consisting of characters up to s[i-1] or not. If found to be true, then 
+append the current substring into res[].
+5. Finally, print the res[] array.*/
+class Solution {
+public:
+    int checkSubstr(string &s, int i, vector<int> &l, vector<int> &r) {
+    int right = r[s[i] - 'a'];
+    for (auto j = i; j <= right; ++j) {
+        if (l[s[j] - 'a'] < i)
+            return -1;
+        right = max(right, r[s[j] - 'a']);
+    }
+    return right;
+}
+vector<string> maxNumOfSubstrings(string s) {
+    vector<int> l(26, INT_MAX), r(26, INT_MIN);
+    vector<string> res;
+    for (int i = 0; i < s.size(); ++i) {
+        l[s[i] - 'a'] = min(l[s[i] - 'a'], i);
+        r[s[i] - 'a'] = i;
+    }
+    int right = -1;
+    for (int i = 0; i < s.size(); ++i) {
+        if (i == l[s[i] - 'a']) {
+            int new_right = checkSubstr(s, i, l, r);
+            if (new_right != -1) {
+                if (i > right)
+                    res.push_back("");                     
+                right = new_right;
+                res.back() = s.substr(i, right - i + 1);
+            }
+        }
+    }
+    return res;
+}
+};
