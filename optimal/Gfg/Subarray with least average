@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int least_average(vector<int> nums, int k) {
+        int avg=0;
+        int l;
+        int r=0;
+    if(k>nums.size())
+    return 0;
+      for(int i=0;i<k;i++)
+      avg+=nums[i];
+      l=avg;
+      for(int i=k;i<nums.size();i++)
+      {
+      avg+=nums[i]-nums[i-k];
+      if(avg<l){
+      l=avg;
+      r=i-k+1;
+      }
+      }
+      return r+1;
+    }
+};
