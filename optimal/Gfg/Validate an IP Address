@@ -9,12 +9,12 @@ Your task is to complete the function isValid which returns 1 if the given IPv4 
 The function takes the IPv4 address as the only argument in the form of string.*/
 class Solution {
     public:
-    int isValid(string s) {
+    int isValid(string address) {
             // code here
    std::vector<std::string> parts;
-    std::istringstream iss(s);
+    std::istringstream iss(address);
     std::string part;
-    if(s[s.size()-1]=='.')
+    if(address[address.size()-1]=='.')
     return false;
     // Split the address into parts based on the dot separator
     while (std::getline(iss, part, '.')) {
