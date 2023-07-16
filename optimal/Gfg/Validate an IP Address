@@ -1,0 +1,45 @@
+/*Write a program to Validate an IPv4 Address.
+According to Wikipedia, IPv4 addresses are canonically represented in dot-decimal notation, which consists of four
+decimal numbers, each ranging from 0 to 255, separated by dots, e.g., 172.16.254.1 .
+A valid IPv4 Address is of the form x1.x2.x3.x4 where 0 <= (x1, x2, x3, x4) <= 255.
+Thus, we can write the generalized form of an IPv4 address as (0-255).(0-255).(0-255).(0-255).
+Note: Here we are considering numbers only from 0 to 255 and any additional leading zeroes will be considered invalid.
+
+Your task is to complete the function isValid which returns 1 if the given IPv4 address is valid else returns 0. 
+The function takes the IPv4 address as the only argument in the form of string.*/
+class Solution {
+    public:
+    int isValid(string s) {
+            // code here
+   std::vector<std::string> parts;
+    std::istringstream iss(s);
+    std::string part;
+    if(s[s.size()-1]=='.')
+    return false;
+    // Split the address into parts based on the dot separator
+    while (std::getline(iss, part, '.')) {
+        parts.push_back(part);
+    }
+    // Check if the number of parts is exactly 4
+    if (parts.size() != 4) {
+        return false;
+    }
+    // Check each part for validity
+    for (const std::string& part : parts) {
+        // Check if the part is a valid integer within the range 0-255
+        if (part.empty() || part.size() > 3) {
+            return false;
+        }
+        for (char c : part) {
+            if (!std::isdigit(c)) {
+                return false;
+            }
+        }
+        int value = std::stoi(part);
+        if (value < 0 || value > 255 || (part[0] == '0' && part.size() > 1)) {
+            return false;
+        }
+    }
+    return true;
+}
+};
