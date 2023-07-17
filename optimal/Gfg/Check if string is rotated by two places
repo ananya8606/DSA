@@ -1,0 +1,50 @@
+/* Given two strings a and b. The task is to find if the string 'b' can be obtained by rotating 
+another string 'a' by exactly 2 places.
+Clockwise Rotation:
+
+Take the last two characters of the string and move them to the front.
+The rest of the string remains in the same order.
+For example, let's rotate the string "amazon" clockwise by two places:
+
+Take the last two characters, "on", and move them to the front: "on" + "amaz" = "onamaz"
+The rest of the string remains unchanged: "onamaz"
+
+Counterclockwise Rotation:
+Take the first two characters of the string and move them to the end.
+The remaining characters stay in the same order.
+Let's rotate the string "amazon" counterclockwise by two places:
+
+Take the first two characters, "am", and move them to the end: "azon" + "am" = "azonam"
+The remaining characters remain the same: "azonam" */
+
+class Solution
+{
+    public:
+    //Function to check if a string can be obtained by rotating
+    //another string by exactly 2 places.
+    bool clockwise(string str1,string str2)
+    {
+    string str="";
+    for(int i=0;i<str1.size()-2;i++)
+    str=str+str1[i];
+    string c=str1.substr(str1.size()-2)+str;
+    return c==str2;
+    }
+    bool anticlockwise(string str1,string str2)
+    {
+    string str=str1.substr(2);
+    string c=str+str1[0]+str1[1];
+    return c==str2;
+    }
+    bool isRotated(string str1, string str2)
+    {
+    if(str1.size()!=str2.size())
+    return 0;
+    if(str1.size()==1 && str1!=str2)
+    return 0;
+    if(str1.size()==1 && str1==str2)
+    return 1;
+    return clockwise(str1,str2) || anticlockwise(str1,str2);
+    }
+
+};
