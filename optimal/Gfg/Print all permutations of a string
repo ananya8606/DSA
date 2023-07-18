@@ -32,9 +32,9 @@ class Solution
                 swap(str[i], str[index]);
             }
         }
-	       	vector<string>find_permutation(string str){
-		        set<string> ans;
-		        sort(str.begin(), str.end());
+	  vector<string>find_permutation(string str){
+	    set<string> ans;
+	    sort(str.begin(), str.end());
             helper(0, ans, str);
             vector<string> res(ans.begin(), ans.end());
             return res;
