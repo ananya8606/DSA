@@ -1,0 +1,43 @@
+/* Recursion tree:
+                                   A
+                 /                 |                          \ 
+              ABC                 BAC                         CBA  
+        A is fixed              B is fixed                  C is fixed  
+         /     \                /        \                    /    \
+AB is fixed     AC is fixed BA is fixed  BC is fixed CB is fixed  CA is fixed 
+  /                \          /             \              /          \
+ABC                ACB      BAC              BCA          CBA          CAB                    
+
+Complexity:
+Time Complexity: O((N! * log N) + (N! * log N!)), As recursion takes O(N!) time because we generate every 
+possible permutation and another O(log N)  time is required to insert every permutation in the set. 
+Also, O(N! Log N!)  time is required to sort the array.
+Auxiliary Space: O(N*N!), To store all permutations O(N!) space is required and every permutation 
+is of N size string so total space will be O(N*N!). */
+
+class Solution
+{
+	public:		
+   	    void helper(int index, set<string> &ans, string str){
+            if(index == str.size()-1){
+                ans.insert(str);
+                return;
+            }
+            for(int i = index; i < str.size(); i++){
+                if(i != index && str[i] == str[index]){
+                    continue;
+                }
+                swap(str[i], str[index]);
+                helper(index + 1, ans, str);
+                swap(str[i], str[index]);
+            }
+        }
+	       	vector<string>find_permutation(string str){
+		        set<string> ans;
+		        sort(str.begin(), str.end());
+            helper(0, ans, str);
+            vector<string> res(ans.begin(), ans.end());
+            return res;
+		}
+};
+
