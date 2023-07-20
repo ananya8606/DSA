@@ -1,0 +1,22 @@
+//User function template for C++
+class Solution{
+public:	
+	int isRepeat(string s)
+	{
+	for(int i=0;i<s.size()-1;i++)
+	{
+	string t=s.substr(0,i+1);
+	if((t[t.size()-1] == s[s.size()-1]) && s.size()%t.size()==0)
+	{
+	string g="";
+	while(g.size()<s.size())
+	{
+	g=g+t;
+	}
+	if(g==s)
+	return 1;
+	}
+	}
+	return 0;
+	}
+};
