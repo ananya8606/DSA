@@ -1,0 +1,12 @@
+   int isRepeat(std::string s) {
+        if (s.length() <= 1)
+            return 0;
+        std::string str = s + s;
+        if (str.substr(1, str.length() - 2).find(s) != std::string::npos)
+            return 1;
+        return 0;
+    }
+};
+/* Concatenate s with itself to create a new string str. For example, if s = "abc", then str = "abcabc".
+If s is formed by repeating a substring, it means that s should appear within the middle part of str, 
+excluding the first and last characters. */
