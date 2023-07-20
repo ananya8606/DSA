@@ -1,0 +1,23 @@
+class Solution{
+    public:
+    int longestUniqueSubsttr(string s) {
+        bool visited[256] = {false}; // Initialize a bool array to track visited characters
+        int maxLength = 0;
+        int left = 0; // Left pointer to mark the start of the current substring
+
+        for (int right = 0; right < s.size(); right++) {
+            // If the current character is already visited and its last occurrence is after the left pointer,
+            // move the left pointer to the position after the last occurrence of the character.
+            while (visited[s[right]]) {
+                visited[s[left]] = false;
+                left++;
+            }
+
+            // Mark the character as visited and update the maxLength.
+            visited[s[right]] = true;
+            maxLength = max(maxLength, right - left + 1);
+        }
+
+        return maxLength;
+    }
+};
