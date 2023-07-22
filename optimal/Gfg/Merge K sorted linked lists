@@ -1,0 +1,47 @@
+/*Linked list Node structure
+
+struct Node
+{
+	int data;
+	Node* next;
+	
+	Node(int x){
+	    data = x;
+	    next = NULL;
+	}
+	
+};
+*/ 
+
+class Solution{
+  public:
+    //Function to merge K sorted linked list.
+    struct compare {
+        bool operator()(struct Node* a,struct Node* b)
+        {
+            return a->data>b->data;
+        }
+    };
+    Node * mergeKLists(Node *arr[], int K)
+    {
+    priority_queue<Node*,vector<Node*>,compare>pq;
+    for(int i=0;i<K;i++)
+    {
+    if(arr[i])
+    pq.push(arr[i]);
+    }
+    Node* cur=new Node(-1);
+    Node* t=cur;
+    while(!pq.empty())
+    {
+    Node* top=pq.top();
+    pq.pop();
+    t->next=top;
+    t=top;
+    if(top->next)
+    pq.push(top->next);
+    }
+    t->next=NULL;
+    return cur->next;
+    }
+}; 
