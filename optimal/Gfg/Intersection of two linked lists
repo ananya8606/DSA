@@ -1,0 +1,43 @@
+/* structure of list node:
+
+struct Node
+{
+    int data;
+    Node *next;
+    Node(int val)
+    {
+        data=val;
+        next=NULL;
+    }
+};
+
+*/
+
+class Solution{
+  public:
+    Node* findIntersection(Node* head1, Node* head2)
+    {
+    Node* x=head1;
+    Node* y=head2;
+    unordered_map<int,int>m;
+    while(y)
+    {
+    m[y->data]++;
+    y=y->next;
+    }
+    Node* d=new Node(0);
+    Node* j=d;
+    x=head1;
+    while(x)
+    {
+    if(m.find(x->data)!=m.end())
+    {
+    Node* l=new Node(x->data);
+    j->next=l;
+    j=j->next;
+    }
+    x=x->next;
+    }
+    return d->next;
+    }
+};
