@@ -1,0 +1,106 @@
+/* node for linked list:
+
+struct Node {
+    int data;
+    struct Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+
+class Solution
+{
+    public:
+    //Function to add two numbers represented by linked list.
+    struct Node* addTwoLists(struct Node* first, struct Node* second)
+    {
+    if(!first)
+    return second;
+    if(!second)
+    return first;
+    if(!first && !second)
+    return NULL;
+    Node* x=NULL;
+    Node* y=NULL;
+    Node* z=x;
+    while(first && first->next)
+    {
+    y=first->next;
+    first->next=z;
+    z=first;
+    first=y;
+    }
+    first->next=z;
+    x=NULL;
+    y=NULL;
+    z=x;
+    while(second && second->next)
+    {
+    y=second->next;
+    second->next=z;
+    z=second;
+    second=y;
+    }
+    second->next=z;
+    x=first;
+    y=second;
+    int c=0;
+    int j=0;
+    Node* k=new Node(0);
+    z=k;
+    while(x && y)
+    {
+    Node* j = new Node((x->data + y->data+ c)%10);
+    c= (x->data + y->data+c)/10;
+    z->next=j;
+    z=z->next;
+    x=x->next;
+    y=y->next;
+    }
+    while(x && c)
+    {
+    Node* j = new Node((x->data + c)%10);
+    c= (x->data + c)/10;
+    z->next=j;
+    z=z->next;
+    x=x->next;
+    }
+     while(y && c)
+    {
+    Node* j = new Node((y->data + c)%10);
+    c= (y->data + c)/10;
+    z->next=j;
+    z=z->next;
+    y=y->next;
+    }
+    if(x && c==0)
+    {
+    z->next=x;
+    }
+    if(y && c==0)
+    z->next=y;
+    if(!x && !y && c!=0)
+    {
+    Node* j = new Node(c);
+    z->next=j; 
+    z=z->next;
+    z->next=NULL;
+    }
+    x=NULL;
+    y=NULL;
+    z=x;
+    k=k->next;
+    while(k && k->next)
+    {
+    y=k->next;
+    k->next=z;
+    z=k;
+    k=y;
+    }
+    k->next=z;
+    return k;
+    }
+};
