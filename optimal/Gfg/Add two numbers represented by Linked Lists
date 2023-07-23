@@ -1,0 +1,178 @@
+/* Reversing both Linked Lists then performing addition and then creating resultant linked list and reversing it. */
+/* node for linked list:
+
+struct Node {
+    int data;
+    struct Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+
+class Solution
+{
+    public:
+    //Function to add two numbers represented by linked list.
+    struct Node* addTwoLists(struct Node* first, struct Node* second)
+    {
+    if(!first)
+    return second;
+    if(!second)
+    return first;
+    if(!first && !second)
+    return NULL;
+    Node* x=NULL;
+    Node* y=NULL;
+    Node* z=x;
+    while(first && first->next)
+    {
+    y=first->next;
+    first->next=z;
+    z=first;
+    first=y;
+    }
+    first->next=z;
+    x=NULL;
+    y=NULL;
+    z=x;
+    while(second && second->next)
+    {
+    y=second->next;
+    second->next=z;
+    z=second;
+    second=y;
+    }
+    second->next=z;
+    x=first;
+    y=second;
+    int c=0;
+    int j=0;
+    Node* k=new Node(0);
+    z=k;
+    while(x && y)
+    {
+    Node* j = new Node((x->data + y->data+ c)%10);
+    c= (x->data + y->data+c)/10;
+    z->next=j;
+    z=z->next;
+    x=x->next;
+    y=y->next;
+    }
+    while(x && c)
+    {
+    Node* j = new Node((x->data + c)%10);
+    c= (x->data + c)/10;
+    z->next=j;
+    z=z->next;
+    x=x->next;
+    }
+     while(y && c)
+    {
+    Node* j = new Node((y->data + c)%10);
+    c= (y->data + c)/10;
+    z->next=j;
+    z=z->next;
+    y=y->next;
+    }
+    if(x && c==0)
+    {
+    z->next=x;
+    }
+    if(y && c==0)
+    z->next=y;
+    if(!x && !y && c!=0)
+    {
+    Node* j = new Node(c);
+    z->next=j; 
+    z=z->next;
+    z->next=NULL;
+    }
+    x=NULL;
+    y=NULL;
+    z=x;
+    k=k->next;
+    while(k && k->next)
+    {
+    y=k->next;
+    k->next=z;
+    z=k;
+    k=y;
+    }
+    k->next=z;
+    return k;
+    }
+};
+
+
+/* Storing values of both linked lists in two stacks and then performing addition and then creating reversed linked list and then reversing it. */
+
+/* node for linked list:
+
+struct Node {
+    int data;
+    struct Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+
+class Solution
+{
+    public:
+    //Function to add two numbers represented by linked list.
+    struct Node* addTwoLists(struct Node* first, struct Node* second)
+    {
+    if(!first)
+    return second;
+    if(!second)
+    return first;
+    if(!first && !second)
+    return NULL;
+    stack<int>s1,s2;
+    while(first)
+    {
+    s1.push(first->data);
+    first=first->next;
+    }
+    while(second)
+    {
+    s2.push(second->data);
+    second=second->next;
+    }
+    Node* k=new Node(0);
+    Node* j=k;
+    int c=0;
+    while(!s1.empty() || !s2.empty() || c)
+    {
+    int p=!s1.empty()?s1.top():0;
+    int q=!s2.empty()?s2.top():0;
+     Node* b=new Node((p+q+c)%10);     
+     c=(p+q+c)/10;
+     j->next=b;
+     j=j->next;
+     if(!s1.empty())
+     s1.pop();
+     if(!s2.empty())
+     s2.pop();
+    }
+    k=k->next;
+    Node* x=NULL;
+    Node* y=NULL;
+    Node* z=x;
+    while(k && k->next)
+    {
+    y=k->next;
+    k->next=z;
+    z=k;
+    k=y;
+    }
+    k->next=z;
+    return k;
+    }
+};
