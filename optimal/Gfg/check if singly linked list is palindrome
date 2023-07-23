@@ -1,0 +1,47 @@
+/*
+struct Node {
+  int data;
+  struct Node *next;
+  Node(int x) {
+    data = x;
+    next = NULL;
+  }
+};
+*/
+
+class Solution{
+  public:
+    //Function to check whether the list is palindrome.
+    bool isPalindrome(Node *head)
+    {
+    Node* x=NULL;
+    Node* y=NULL;
+    Node* k=x;
+    x=head;
+    int h=0;
+    while(x)
+    {
+    h=h*10+x->data;
+    x=x->next;
+    }
+    while(head && head->next)
+    {
+    y=head->next;
+    head->next=k;
+    k=head;
+    head=y;
+    y=y->next;
+    }
+    head->next=k;
+    k=head;
+    int d=0;
+    while(k)
+    {
+    d=d*10+k->data;
+    k=k->next;
+    }
+    if(h==d)
+    return true;
+    return false;
+    }
+};
