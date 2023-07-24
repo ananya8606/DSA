@@ -1,0 +1,23 @@
+// Function to find square root
+// x: element to find square root
+class Solution{
+  public:
+    long long int floorSqrt(long long int x) 
+    {
+    if(x==1 || x==0)
+    return x;
+    long long int l=0,h=x;
+    while(l<=h)
+    {
+    long long int mid=(l+h)/2;
+    long long int k=mid*mid;
+    long long int j=(mid+1)*(mid+1);
+    if(k<=x && x<j)
+    return k/mid;
+    else if(k>x)
+    h=mid-1;
+    else if(k<x)
+    l=mid+1;
+    }
+    }
+};
