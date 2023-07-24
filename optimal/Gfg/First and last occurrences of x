@@ -1,0 +1,37 @@
+
+vector<int> find(int arr[], int n, int x)
+{
+    int l = 0, h = n - 1;
+    int firstOccurrence = -1, lastOccurrence = -1;
+
+    while (l <= h)
+    {
+        int mid = l + (h - l) / 2;
+
+        if (arr[mid] == x)
+        {
+            firstOccurrence = mid;
+            lastOccurrence = mid;
+
+            // Find the first occurrence
+            while (firstOccurrence > 0 && arr[firstOccurrence - 1] == x)
+                firstOccurrence--;
+
+            // Find the last occurrence
+            while (lastOccurrence < n - 1 && arr[lastOccurrence + 1] == x)
+                lastOccurrence++;
+
+            break;
+        }
+        else if (arr[mid] > x)
+        {
+            h = mid - 1;
+        }
+        else
+        {
+            l = mid + 1;
+        }
+    }
+
+    return {firstOccurrence, lastOccurrence};
+}
