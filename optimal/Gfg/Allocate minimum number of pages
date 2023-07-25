@@ -1,0 +1,53 @@
+//User function template in C++
+
+class Solution 
+{
+    public:
+    //Function to find minimum number of pages.
+
+bool canAllocate(int pages[], int N, int M, int currMin) {
+    int students = 1;
+    int currentPages = 0;
+
+    for (int i = 0; i < N; i++) {
+        if (pages[i] > currMin) {
+            return false; // If a book's pages exceed the current minimum, it cannot be allocated to any student
+        }
+        if (currentPages + pages[i] > currMin) {
+            students++;
+            currentPages = pages[i];
+            if (students > M) {
+                return false; // If the number of students exceeds M, the allocation is not possible
+            }
+        } else {
+            currentPages += pages[i];
+        }
+    }
+    return true;
+}
+
+int findPages(int A[], int N, int M) {
+    int totalPages = 0;
+    int maxPages = INT_MIN;
+    if(M>N)
+    return -1;
+    for (int i = 0; i < N; i++) {
+        totalPages += A[i];
+        maxPages = std::max(maxPages, A[i]);
+    }
+
+    int low = maxPages;
+    int high = totalPages;
+
+    while (low < high) {
+        int mid = low + (high - low) / 2;
+        if (canAllocate(A, N, M, mid)) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return low;
+}
+
+};
