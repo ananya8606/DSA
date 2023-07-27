@@ -1,0 +1,24 @@
+//User function template for C++
+
+class Solution{
+    public:
+    // arr : given array
+    // l : starting index of the array i.e 0
+    // r : ending index of the array i.e size-1
+    // k : find kth smallest element and return using this function
+   struct MyComparator {
+    bool operator()(const int& a, const int& b) const {
+        // Define your custom comparison logic here
+        return a > b; // for min heap (ascending order)
+        // return a < b; // for max heap (descending order)
+    }
+};
+    int kthSmallest(int arr[], int l, int r, int k) {
+    std::priority_queue<int, std::vector<int>, MyComparator> pq;
+    for(int i=0;i<r+1;i++)
+    pq.push(arr[i]);
+    for(int i=0;i<k-1;i++)
+    pq.pop();
+    return pq.top();
+    }
+};
