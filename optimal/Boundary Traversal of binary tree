@@ -1,0 +1,56 @@
+/* A binary tree Node
+struct Node
+{
+    int data;
+    Node* left, * right;
+}; */
+
+class Solution {
+public:
+    void lb(Node* root,vector<int> &v)
+    {
+    if(!root)
+    return;
+    if(!root->left && !root->right)
+    return;
+    v.push_back(root->data);
+    if(root->left)
+    lb(root->left,v);
+    else if(root->right)
+    lb(root->right,v);
+    }
+    void rb(Node* root,vector<int> &v)
+    {
+    if(!root)
+    return;
+    if(!root->left && !root->right)
+    return;
+    if(root->right)
+    rb(root->right,v);
+    else if(root->left)
+    rb(root->left,v);
+    v.push_back(root->data);
+    }
+
+    void leaf(Node* root,vector<int> &v)
+    {
+    if(!root)
+    return;
+    if(!root->left && !root->right)
+    v.push_back(root->data);
+    leaf(root->left,v);
+    leaf(root->right,v);
+    }
+    vector <int> boundary(Node *root)
+    {
+    vector<int>v;
+    v.push_back(root->data);
+    if(root->left)
+    lb(root->left,v);
+    leaf(root->left,v);
+    leaf(root->right,v);
+    if(root->right)
+    rb(root->right,v);
+    return v;
+    }
+};
