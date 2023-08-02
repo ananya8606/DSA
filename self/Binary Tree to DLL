@@ -1,0 +1,45 @@
+/* Structure for tree and linked list
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+
+// This function should return head to the DLL
+class Solution
+{
+    public: 
+    //Function to convert binary tree to doubly linked list and return it.
+    void inorder(Node* root,Node* &x)
+    {
+    if(!root)
+    return;
+    inorder(root->left,x);
+    Node* c=new Node(root->data);
+    x->right=c;
+    x=x->right;
+    inorder(root->right,x);
+    }
+    Node * bToDLL(Node *root)
+    {
+    Node* head=new Node(0);
+    Node* x=head;
+    inorder(root,x);
+    head=head->right;
+    Node* p=head;
+    while(p->right)
+    {
+    p->right->left=p;
+    p=p->right;
+    }
+    return head;
+    }
+};
