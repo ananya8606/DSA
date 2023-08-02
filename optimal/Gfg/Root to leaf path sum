@@ -1,0 +1,30 @@
+/* A binary tree node
+struct Node
+{
+    int data;
+    Node* left, * right;
+}; */
+
+/*you are required to
+complete this function */
+class Solution
+{
+    public:
+    bool calPathSum(Node* root,int S,int c)
+    {
+    if(!root)
+    {
+    return false;
+    }
+    c=c+root->data;
+    if(S==c && !root->left && !root->right)
+    return true;
+    if(calPathSum(root->left,S,c) || calPathSum(root->right,S,c))
+    return true;
+    return false;
+    }
+    bool hasPathSum(Node *root, int S) {
+    int c=0;
+    return calPathSum(root,S,c);
+}
+};
