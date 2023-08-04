@@ -1,0 +1,38 @@
+
+/*Complete the code here.
+Node is as follows:
+struct Node
+{
+  int data;
+  Node* left;
+  Node* right;
+};
+*/
+class Solution {
+    public:
+    int findPos(int element,int in[],int start,int end)
+    {
+    for(int i=start;i<=end;i++)
+    {
+    if(in[i]==element)
+    return i;
+    }
+    return -1;
+   }
+    Node* solve(int pre[],int in[],int preStart,int preEnd,int inStart,int inEnd)
+    {
+    if(preStart>preEnd || inStart>inEnd)
+    return NULL;
+    int root=pre[preStart];
+    int position=findPos(root,in,inStart,inEnd);
+    Node* rootElement=new Node(root);
+    int leftSubtreeSize=position-inStart;                          
+    rootElement->left=solve(pre,in,preStart+1,preStart+leftSubtreeSize,inStart,position-1);
+    rootElement->right=solve(pre,in,preStart+leftSubtreeSize+1,preEnd,position+1,inEnd);
+    return rootElement;
+    }
+    Node* buildTree(int in[],int pre[],int n)
+    {
+    return solve(pre,in,0,n-1,0,n-1);
+    }
+};
