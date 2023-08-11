@@ -1,0 +1,23 @@
+//User function template for C++
+
+class Solution {
+  public:
+    bool areKAnagrams(string str1, string str2, int k) {
+    if(str1.size()!=str2.size())
+    return false;
+    map<char,int>m;
+    for(int i=0;i<str1.size();i++)
+    m[str1[i]]++;
+     for(int i=0;i<str2.size();i++)
+    m[str2[i]]--;
+    int c=0;
+    for(auto a:m)
+    {
+    if(a.second>0)
+    c+=a.second;
+    }
+    if(c<=k)
+    return true;
+    return false;
+    }
+};
