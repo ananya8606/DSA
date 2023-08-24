@@ -1,23 +1,32 @@
 /* We are selecting a maximum element having the msb 1 at a position and for other elements we are cancelling the set bits 
 which are at same position. By doing this we are getting for each position a maximum element which is having msb 1 at 
 that position.And we can get the final result by doing xor of all these maximum elements.
-The given code is an implementation of a function called `maxSubsetXOR` that aims to find the maximum XOR subset from a given array `set[]`. Let's break down the approach and understand the intuition behind it.
-
-XOR (exclusive OR) is a binary operation that takes two binary digits and returns 1 if the digits are different, and 0 if they are the same. In the context of this problem, we want to find a subset of elements from the given array such that the XOR of all those elements is maximized.
-
-The approach used in the code is based on the observation that the maximum XOR can be achieved by selecting elements such that their binary representations differ in as many positions as possible. So, the algorithm tries to build the maximum XOR by selecting elements one by one, considering the most significant bit (MSB) first.
+The given code is an implementation of a function called `maxSubsetXOR` that aims to find the maximum XOR subset from a 
+given array `set[]`. Let's break down the approach and understand the intuition behind it.
+XOR (exclusive OR) is a binary operation that takes two binary digits and returns 1 if the digits are different, and 0 
+if they are the same. In the context of this problem, we want to find a subset of elements from the given array such 
+that the XOR of all those elements is maximized.
+The approach used in the code is based on the observation that the maximum XOR can be achieved by selecting elements 
+such that their binary representations differ in as many positions as possible. So, the algorithm tries to build the 
+maximum XOR by selecting elements one by one, considering the most significant bit (MSB) first.
 
 Here's how the code works step by step:
 
 1. It starts by iterating over each bit position from the MSB to the LSB (Least Significant Bit).
-2. Within each bit position, it tries to find the maximum element in the remaining unprocessed portion of the array whose bit at the current position is set (1).
-3. It swaps the maximum element found with the current index element, moving the processed part of the array to the left and the unprocessed part to the right.
-4. It then iterates over the remaining unprocessed elements and tries to cancel out the bit at the current position by performing XOR operations. This step ensures that the selected element contributes to the XOR sum and other elements with the same bit at the same position are transformed to have that bit cleared.
-5. The process continues for all bit positions, and finally, the XOR of all the elements in the modified array gives the maximum XOR subset.
-
-The intuition behind this approach is that it greedily selects elements with the maximum possible value at each bit position to contribute to the final XOR sum. By doing this iteratively for all bit positions, it ensures that the XOR of the selected elements is maximized.
-
-Overall, this algorithm uses bitwise manipulation to build the maximum XOR subset step by step, taking advantage of the properties of XOR operations to achieve the desired result.  */
+2. Within each bit position, it tries to find the maximum element in the remaining unprocessed portion of the array
+whose bit at the current position is set (1).
+3. It swaps the maximum element found with the current index element, moving the processed part of the array to the 
+left and the unprocessed part to the right.
+4. It then iterates over the remaining unprocessed elements and tries to cancel out the bit at the current position 
+by performing XOR operations. This step ensures that the selected element contributes to the XOR sum and other elements 
+with the same bit at the same position are transformed to have that bit cleared.
+5. The process continues for all bit positions, and finally, the XOR of all the elements in the modified array gives 
+the maximum XOR subset.
+The intuition behind this approach is that it greedily selects elements with the maximum possible value at each bit 
+position to contribute to the final XOR sum. By doing this iteratively for all bit positions, it ensures that the XOR 
+of the selected elements is maximized.
+Overall, this algorithm uses bitwise manipulation to build the maximum XOR subset step by step, taking advantage of the 
+properties of XOR operations to achieve the desired result.  */
 // Function to return maximum XOR subset in set[]
 
 class Solution
