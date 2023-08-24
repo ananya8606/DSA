@@ -1,6 +1,6 @@
 /* We are selecting a maximum element having the msb 1 at a position and for other elements we are cancelling the set bits 
 which are at same position. By doing this we are getting for each position a maximum element which is having msb 1 at 
-that position.And we can get the final result by doing xor of all the elements.
+that position.And we can get the final result by doing xor of all these maximum elements.
 The given code is an implementation of a function called `maxSubsetXOR` that aims to find the maximum XOR subset from a given array `set[]`. Let's break down the approach and understand the intuition behind it.
 
 XOR (exclusive OR) is a binary operation that takes two binary digits and returns 1 if the digits are different, and 0 if they are the same. In the context of this problem, we want to find a subset of elements from the given array such that the XOR of all those elements is maximized.
