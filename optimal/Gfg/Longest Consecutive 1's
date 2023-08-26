@@ -1,0 +1,25 @@
+//User function Template for C++
+
+/*  Function to calculate the longest consecutive ones
+*   N: given input to calculate the longest consecutive ones
+*/
+class Solution
+{
+    public:
+    int maxConsecutiveOnes(int N)
+    {
+    int maxOne=INT_MIN,count=0;
+    for(int i=31;i>=0;i--)
+    {
+    if((N & (1<<i)) == 0)
+    {
+    maxOne=max(maxOne,count);
+    count=0;
+    }
+    else
+    count++;
+    }
+    maxOne=max(maxOne,count);
+    return maxOne;
+    }
+};
