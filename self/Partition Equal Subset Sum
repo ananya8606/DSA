@@ -1,0 +1,23 @@
+// User function Template for C++
+
+class Solution{
+public:
+    //User function template for C++
+    int combinationsum(int A[],int x,int i,int N)
+    {
+    if(x==0)
+    return 1;
+    if(x<0 || i==N)
+    return 0;
+    return combinationsum(A,x-A[i],i+1,N) + combinationsum(A,x,i+1,N);
+    }
+      int equalPartition(int N, int arr[]) {
+        int sum=0;
+        for(int i=0;i<N;i++)
+        sum=sum+arr[i];
+        if(sum%2 == 1)
+        return 0;
+        int x=sum/2;
+        return combinationsum(arr,x,0,N);
+    }
+};
