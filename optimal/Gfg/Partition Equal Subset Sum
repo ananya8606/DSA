@@ -1,0 +1,75 @@
+/* Method 1 using recursion */
+// User function Template for C++
+
+class Solution{
+public:
+    
+    bool solve( int index, int N, int arr[], int target,vector<vector<int>> &dp)
+    {
+        if(index>=N) return 0;
+        if(target<0) return 0;
+        if(target==0) return 1;
+        if(dp[index][target] != -1) return dp[index][target];
+        
+        bool include = solve(index+1, N, arr, target - arr[index], dp);
+        bool exclude = solve(index+1, N, arr, target - 0, dp);
+        
+        return dp[index][target] = include or exclude;
+    }
+    
+    int equalPartition(int N, int arr[])
+    {
+        
+        int total = 0;
+        for(int i=0; i<N ; i++)
+        {
+            total+=arr[i];
+        }
+        if(total & 1) return 0;
+        int target = total/2;
+        
+        vector<vector<int>> dp(N, vector<int> (target+1, -1));
+        
+        return solve(0, N, arr, target, dp);
+    }
+};
+
+/* Method 2 using dp */
+// User function Template for C++
+
+class Solution{
+public:
+    //User function template for C++
+    int equalPartition(int N, int arr[]) {
+        int sum=0;
+        for(int i=0;i<N;i++)
+            sum=sum+arr[i];
+        
+        // Checking if sum is odd, then equal partition is not possible
+        if(sum%2 == 1)
+            return 0;
+        
+        int x=sum/2;
+        int dp[x+1][N+1];  // Adjusted array size
+        
+        // Initializing the base cases
+        for(int i=0;i<=N;i++)
+            dp[0][i]=1;
+        for(int i=1;i<=x;i++)
+            dp[i][0]=0;
+
+        // Filling the DP array
+        for(int i=1;i<=x;i++)
+        {
+            for(int j=1;j<=N;j++)
+            {
+                 if(arr[j-1] <= i)
+                    dp[i][j] = dp[i][j-1] || dp[i - arr[j-1]][j-1]; // If taking the current element
+                 else
+                    dp[i][j] = dp[i][j-1]; // If not taking the current element
+            }
+        }
+        
+        return dp[x][N];
+    }
+};
