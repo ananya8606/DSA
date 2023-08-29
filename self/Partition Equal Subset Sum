@@ -21,3 +21,30 @@ public:
         return combinationsum(arr,x,0,N);
     }
 };
+//Method 2
+
+// User function Template for C++
+
+class Solution{
+public:
+    //User function template for C++
+    int combinationsum(int A[],int x,int i)
+    {
+    if(x==0)
+    return 1;
+    if(i==0)
+    return (A[0]==x);
+    if(x<0)
+    return 0;
+    return combinationsum(A,x-A[i],i-1) + combinationsum(A,x,i-1);
+    }
+      int equalPartition(int N, int arr[]) {
+        int sum=0;
+        for(int i=0;i<N;i++)
+        sum=sum+arr[i];
+        if(sum%2 == 1)
+        return 0;
+        int x=sum/2;
+        return combinationsum(arr,x,N-1);
+    }
+};
