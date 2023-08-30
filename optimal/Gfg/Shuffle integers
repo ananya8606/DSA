@@ -1,0 +1,43 @@
+/* Method 1 using recursion */
+class  Solution
+{
+    public:
+    void helper(int arr[],int i, int j , int counter){
+       if(counter<= 0){
+           return;
+       }
+       int a = arr[i];
+       int b = arr[j];
+       
+       helper(arr,i-1,j-1,counter - 2);
+       
+       arr[counter - 2] = a;
+       arr[counter - 1] = b;
+       return;
+    }
+    void shuffleArray(int arr[], int n)
+    {
+        // Your code goes here
+        helper(arr, n/2 - 1, n - 1, n);
+        
+    }
+};
+
+/* Method 2 using constant space without recursion */
+
+class Solution{
+	public:
+	void shuffleArray(int arr[],int n)
+	{
+	    const int mod = 1e4;
+	    for(int i=0;i<n/2;i++){
+	        arr[2*i] += (arr[i]%(mod))*mod;
+	    }
+	    int j = 1;
+	    for(int i=n/2;i<n;i++){
+	        arr[j] = arr[j] + mod*(arr[i]%(mod));
+	        j+=2;
+	    }
+	    for(int i=0;i<n;i++) arr[i] = arr[i]/mod;
+    }
+};
