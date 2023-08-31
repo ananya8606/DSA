@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int n,m;
+    int delRow[8]={0,0,-1,1,-1,-1,1,1};
+    int delCol[8]={-1,1,0,0,-1,1,1,-1};
+    bool dfs(vector<vector<char>>&grid, string &word,int i,int j,int k){
+        
+        for(int idx=0;idx<word.size();idx++){
+            if(i<0 or i>=n or j<0 or j>=m or word[idx]!=grid[i][j])
+                return false;
+        
+            i+=delRow[k];
+            j+=delCol[k];
+        }
+        return true;
+        
+    }
+	vector<vector<int>>searchWord(vector<vector<char>>grid, string word){
+	    n=grid.size();
+	    m=grid[0].size();
+	    vector<vector<int>>ans;
+	    for(int i=0;i<n;i++)
+	    {
+	        for(int j=0;j<m;j++)
+	        {
+	            if(grid[i][j]==word[0])
+	            {
+	                for(int k=0;k<8;k++){
+	                    if(dfs(grid,word,i,j,k)){
+	                        ans.push_back({i,j});
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    return ans;
+	}
+};
