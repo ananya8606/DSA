@@ -1,0 +1,27 @@
+
+class Solution {
+    public:
+    void solve(string str, string &ans, int p, int n, int k) {
+        if (k == 0 || p == n) {
+            ans = max(str, ans);
+            return;
+        }
+            solve(str,ans,p+1,n,k);
+            for (int j = p + 1; j < n; j++) {
+                if (str[j] > str[p]) {
+                    swap(str[p], str[j]);
+                    solve(str, ans, p + 1, n, k - 1);
+                    swap(str[p], str[j]);
+                }
+            }
+        }
+
+    // Function to find the largest number after k swaps.
+    string findMaximumNum(string str, int k) {
+        int n = str.size();
+        string ans = "";
+        solve(str, ans, 0, n, k);
+        return ans;
+    }
+
+};
