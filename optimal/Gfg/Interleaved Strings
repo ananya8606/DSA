@@ -1,3 +1,23 @@
+/* First, it initializes a 2D array dp of size (n+1) x (m+1) where n is the length of string A, and m is the length 
+of string B. dp[i][j] will be used to store whether it's possible to form a prefix of C using the first i characters 
+of A and the first j characters of B.
+It initializes dp[0][0] to 1 because an empty C can be formed by interleaving two empty strings A and B.
+
+Then, it iterates through both strings A and B along with the corresponding rows and columns in the dp table.
+The nested loops are used to consider different lengths of prefixes of A and B to form the prefix of C.
+
+Inside the loops, it checks two conditions:
+
+If i > 0 (meaning there are characters left in string A) and the character in A at position i-1 matches the character 
+in C at position i+j-1, it sets dp[i][j] to dp[i][j] | dp[i-1][j]. This means that if you can form a prefix of C using 
+the first i-1 characters of A and the first j characters of B, and the current character in A matches the current 
+character in C, then you can form a prefix of C using the first i characters of A and the first j characters of B.
+
+Similarly, if j > 0 (meaning there are characters left in string B) and the character in B at position j-1 matches the 
+character in C at position i+j-1, it sets dp[i][j] to dp[i][j] | dp[i][j-1]. This means that if you can form a prefix 
+of C using the first i characters of A and the first j-1 characters of B, and the current character in B matches the 
+current character in C, then you can form a prefix of C using the first i characters of A and the first j characters 
+of B. */
 //User function template for C++
 
 class Solution {
