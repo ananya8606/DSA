@@ -1,0 +1,60 @@
+#include <stdio.h>
+int safePos(int row,int col,char matrix[8][8])
+{
+for(int i=0;i<8;i++)
+{
+if(i!=row && matrix[i][col]=='Q')
+return 0;
+}
+for(int i=0;i<8;i++)
+{
+if(i!=col && matrix[row][i]=='Q')
+return 0;
+}
+int a=0;
+if(row>=col)
+a=row-col;
+else
+a=col-row;
+for(int i=0;i<8;i++)
+{
+for(int j=0;j<8;j++)
+{
+if(i!=row &&  j!=col && i>=j && i-j==a && matrix[i][j]=='Q')
+return 0;
+if(i!=row &&  j!=col && j>i && j-i==a && matrix[i][j]=='Q')
+return 0;
+}
+}
+int sum=row+col;
+for(int i=0;i<8;i++)
+{
+for(int j=0;j<8;j++)
+{
+if(i!=row &&  j!=col && i+j==sum && matrix[i][j]=='Q')
+return 0;
+}
+}
+return 1;
+}
+int main()
+{
+char matrix[8][8];
+int c=0;
+for(int i=0;i<8;i++)
+{
+scanf("%s",matrix[i]);
+}
+for(int i=0;i<8;i++)
+{
+for(int j=0;j<8;j++)
+{
+if(matrix[i][j]=='Q')
+{
+if(safePos(i,j,matrix))
+c++;
+}
+}
+}
+return c;
+}
