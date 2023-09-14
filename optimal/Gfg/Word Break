@@ -1,0 +1,35 @@
+//User function template for C++
+
+// A : given string to search
+// B : vector of available strings
+
+class Solution
+{
+public:
+    int helper(int i,vector<int> &dp,string A,set<string> &B)
+    {
+    if(i==A.size())
+    return 1;
+    if(dp[i]!=-1)
+    return dp[i];
+    string temp;
+    for(int j=i;j<A.size();j++)
+    {
+    temp+=A[j];
+    if(B.find(temp)!=B.end())
+    {
+    if(helper(j+1,dp,A,B))
+    return dp[i]=1;
+    }
+    }
+    return dp[i]=0;
+    }
+    int wordBreak(string A, vector<string> &B) {
+    vector<int> dp(1100,-1);
+    set<string> st;
+        for(auto it:B){
+            st.insert(it);
+        }
+    return helper(0,dp,A,st);
+    }
+};
