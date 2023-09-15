@@ -1,0 +1,48 @@
+/* https://youtu.be/2Oy4LNC7Ya4?si=vC1zB27-HQxwCYC_ */
+//using memoization
+class Solution {
+	public:
+	    int mod=1e9+7;
+	    int count(string str,int i,int n,vector<int> &dp)
+	    {
+	    if(i>=n)
+	    return 1;
+	    if(dp[i]!=-1)
+	    return dp[i];
+	    if(str[i]=='0')
+	    return 0;
+	    int a=0,b=0;
+	    a=count(str,i+1,n,dp);
+	    if(i!=n-1 && (str[i]=='1' || (str[i]=='2' && str[i+1]<='6')))
+	    b=count(str,i+2,n,dp);
+	    return dp[i]=(a+b)%mod;
+	    }
+		int CountWays(string str){
+		int n=str.size();
+		vector<int>dp(n,-1);
+	    return count(str,0,n,dp);
+		}
+
+};
+
+//using tabulation
+
+class Solution {
+	public:
+	    int mod=1e9+7;
+		int CountWays(string str){
+		int n=str.size();
+		int dp[n+1]={0};
+		dp[0]=1;
+		dp[1]=1;
+	    for(int i=2;i<=n;i++)
+	    {
+	    if(str[i-1]!='0')
+	    dp[i]=dp[i-1];
+	    if(str[i-2]=='1' || (str[i-2]=='2' && str[i-1]<='6'))
+	    dp[i]=(dp[i]+dp[i-2])%mod;
+	    }
+	    return dp[n];
+		}
+
+};
