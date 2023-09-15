@@ -1,2 +1,42 @@
-/* https://youtu.be/ZmlQ3vgAOMo?si=QLsrVySLKMNnv4Im */
+/* https://youtu.be/ZmlQ3vgAOMo?si=QLsrVySLKMNnv4Im 
+There is a more space optimized technique using 1D array.Refer above video. */
+
+class Solution{
+  public:
+/*You are required to complete this method*/
+    int wildCard(string pattern,string str)
+    {
+    int m=pattern.size(),n=str.size();
+    vector<vector<int>> dp(m+1,vector<int>(n+1,-1));
+    dp[0][0]=1;
+    for(int i=1;i<=n;i++)
+    dp[0][i]=0;
+    int flag=1;
+    for(int i=1;i<=m;i++)
+    {
+    for(int j=1;j<=i;j++)
+    {
+    if(pattern[j-1]!='*')
+    {
+    flag=0;
+    break;
+    }
+    }
+    dp[i][0]=flag;
+    }
+    for(int i=1;i<=m;i++)
+    {
+    for(int j=1;j<=n;j++)
+    {
+    if(pattern[i-1]==str[j-1] || pattern[i-1]=='?')
+    dp[i][j]=dp[i-1][j-1];
+    else if(pattern[i-1]=='*')
+    dp[i][j]=dp[i-1][j] | dp[i][j-1];
+    else
+    dp[i][j]=0;
+    }
+    }
+    return dp[m][n];
+    }
+};
 
