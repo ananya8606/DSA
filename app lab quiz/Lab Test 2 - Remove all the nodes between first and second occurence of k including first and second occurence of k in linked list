@@ -1,0 +1,76 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Node{
+int data;
+struct Node* next;
+};
+void reverse(struct Node** head)
+{
+struct Node* a=NULL;
+struct Node* b=*head;
+struct Node* c=(*head)->next;
+while(b->next)
+{
+b->next=a;
+a=b;
+b=c;
+c=c->next;
+}
+b->next=a;
+*head=b;
+}
+int main()
+{
+int n,k;
+scanf("%d",&n);
+scanf("%d",&k);
+int value;
+struct Node* head=(struct Node*) malloc(sizeof(struct Node));
+scanf("%d",&value);
+head->data = value;
+head->next=NULL;
+struct Node* x = head;
+for(int i=1;i<n;i++)
+{
+int value;
+scanf("%d",&value);
+struct Node* t=(struct Node*)malloc(sizeof(struct Node));
+t->data=value;
+t->next=NULL;
+x->next=t;
+x=x->next;
+}
+reverse(&head);
+struct Node* f=NULL;
+struct Node* p=NULL;
+struct Node* s=NULL;
+struct Node* prev=NULL;
+x=head;
+while(x)
+{
+if(x->data == k && !f)
+{
+prev=p;
+f=x;
+}
+else if(x->data == k && f && !s)
+{
+s=x;
+break;
+}
+p=x;
+x=x->next;
+}
+if(prev && s)
+prev->next=s->next;
+else if(!prev && s)
+head=s->next;
+reverse(&head);
+x=head;
+while(x)
+{
+printf("%d ",x->data);
+x=x->next;
+}
+return 0;
+}
