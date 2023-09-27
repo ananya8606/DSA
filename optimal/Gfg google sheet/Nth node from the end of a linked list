@@ -1,0 +1,29 @@
+//User function Template for C
+
+//Function to find the data of nth node from the end of a linked list.
+int getNthFromLast(struct Node *head, int n)
+{
+ int l=0;
+ struct Node* t=head;
+  while(t!=NULL) 
+  {
+   l++;
+   t=t->next;
+  }
+  if(n>l)
+  return -1;
+  t=head;
+  int c=n;
+  while(c)
+  {
+  c--;
+  t=t->next;
+  }
+  struct Node* h=head;
+  while(t)
+  {
+  h=h->next;
+  t=t->next;
+  }
+  return h->data;
+}
