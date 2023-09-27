@@ -1,0 +1,39 @@
+/*
+struct Node {
+  int data;
+  struct Node *next;
+  Node(int x) {
+    data = x;
+    next = NULL;
+  }
+}*head;
+*/
+
+
+class Solution
+{
+    public:
+    //Function to delete a node without any reference to head pointer.
+    void deleteNode(Node *del)
+    {
+    if(del == head)
+    {
+    head=head->next;
+    free(del);
+    }
+    else
+    {
+    struct Node* p=head;
+    while(p && p->next)
+    {
+    if(p->next==del)
+    {
+    p->next=del->next;
+    free(del);
+    }
+    p=p->next;
+    }
+    }
+    }
+
+};
