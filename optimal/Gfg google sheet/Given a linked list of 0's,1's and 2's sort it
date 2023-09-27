@@ -1,0 +1,135 @@
+/* Method 1 */
+
+  Node is defined as
+  struct Node {
+    int data;
+    struct Node *next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+class Solution
+{
+    public:
+    //Function to sort a linked list of 0s, 1s and 2s.
+    Node* segregate(Node *head) {
+    if(!head || !head->next) 
+    return head;
+    struct Node* x=head;
+    struct Node* p=new Node(-1);
+    struct Node* q=new Node(-1);
+    struct Node* r=new Node(-1);
+    struct Node* z=p;
+    struct Node* o=q;
+    struct Node* t=r;
+    z->next=NULL;
+    o->next=NULL;
+    t->next=NULL;
+    while(x)
+    {
+    struct Node* h=x->next;
+    if(x->data==0)
+    {
+    z->next=x;
+    x->next=NULL;
+    z=z->next;
+    }
+    else if(x->data==1)
+    {
+    o->next=x;
+    x->next=NULL;
+    o=o->next;
+    }
+    else
+    {
+    t->next=x;
+    x->next=NULL;
+    t=t->next;
+    }
+    x=h;
+    }
+    if(p->next && q->next && r->next)
+    {
+    z->next=q->next;
+    o->next=r->next;
+    t->next=NULL;
+    return p->next;
+    }
+    else if(p->next && q->next && !r->next)
+    {
+     z->next=q->next;
+     o->next=NULL;
+     return p->next;
+    }
+    else if(p->next && r->next && !q->next)
+    {
+     z->next=r->next;
+     t->next=NULL;
+     return p->next;
+    }
+    else if(q->next && r->next && !p->next)
+    {
+     o->next=r->next;
+     t->next=NULL;
+     return q->next;
+    }
+    else if(p->next)
+    {
+    return p->next;
+    }
+     else if(q->next)
+    {
+    return q->next;
+    }
+     else if(r->next)
+    {
+    return r->next;
+    }
+    }
+};
+
+/* Method 2 */
+
+/*
+ 
+  Node is defined as
+  struct Node {
+    int data;
+    struct Node *next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+class Solution
+{
+    public:
+    //Function to sort a linked list of 0s, 1s and 2s.
+    Node* segregate(Node *head) {
+    int c[3]={0};
+    Node* x=head;
+    while(x)
+    {
+    c[x->data]++;
+    x=x->next;
+    }
+    x=head;
+    int p=0;
+    while(x)
+    {
+    while(c[p]==0)
+    p++;
+    x->data=p;
+    c[p]--;
+    x=x->next;
+    }
+    return head;
+    }
+};
+
+/
