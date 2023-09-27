@@ -1,0 +1,20 @@
+//User function Template for C
+
+struct Node* reverseList(struct Node *head)
+    {
+    if(!head || !head->next)
+    return head;
+    struct Node* x=NULL;
+    struct Node* p=head;
+    struct Node* n=head->next;
+    while(p->next!=NULL)
+    {
+    p->next=x;
+    x=p;
+    p=n;
+    n=p->next;
+    }
+    p->next=x;
+    head=p;
+    return head;
+    }
