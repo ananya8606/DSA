@@ -30,6 +30,8 @@ void U(int a,int b,int n,int parent[n],int rank[n])
 {
 a=findPar(a,n,parent,rank);
 b=findPar(b,n,parent,rank);
+if(a==b)
+return;
 if(rank[a]>rank[b])
 {
 parent[b]=a;
