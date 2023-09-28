@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+int gcd(int a, int b) {
+    int min = (a < b) ? a : b;
+    for (int i = min; i >= 2; i--) {
+        if (a % i == 0 && b % i == 0) {
+            return i; // Return the greatest common divisor
+        }
+    }
+    return 1; // No common divisor greater than 1 found
+}
+
+void reverse(struct Node** head) {
+    struct Node* a = NULL;
+    struct Node* b = *head;
+    struct Node* c = NULL;
+    while (b != NULL) {
+        c = b->next;
+        b->next = a;
+        a = b;
+        b = c;
+    }
+    *head = a;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    if (n == 0)
+        return 0;
+
+    int value;
+    scanf("%d", &value);
+    struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = value;
+    head->next = NULL;
+    struct Node* x = head;
+
+    if (n == 1) {
+        printf("%d", head->data);
+        return 0;
+    }
+
+    for (int i = 1; i < n; i++) {
+        int value;
+        scanf("%d", &value);
+        struct Node* t = (struct Node*)malloc(sizeof(struct Node));
+        t->data = value;
+        t->next = NULL;
+        x->next = t;
+        x = x->next;
+    }
+
+    reverse(&head);
+
+    struct Node* dummy = (struct Node*)malloc(sizeof(struct Node));
+    dummy->next = NULL;
+    struct Node* d = dummy;
+    struct Node* v = x->next;
+    d->next = x;
+    d = d->next;
+    d->next = NULL;
+    x = v;
+    head = x;
+    v = v->next;
+
+    while (x) {
+        int hasCommonFactor = 0;
+        struct Node* p = dummy->next;
+        while (p) {
+            if (gcd(p->data, x->data) > 1) {
+                hasCommonFactor = 1;
+                break;
+            }
+            p = p->next;
+        }
+
+        if (!hasCommonFactor) {
+            d->next = x;
+            x->next = NULL;
+            d = d->next;
+        }
+
+        x = v;
+        if (v) {
+            v = v->next;
+        }
+        head = x;
+    }
+
+    reverse(&dummy);
+    d = dummy;
+    while (d->next) {
+        printf("%d ", d->data);
+        d = d->next;
+    }
+
+    return 0;
+}
