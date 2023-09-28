@@ -1,0 +1,92 @@
+/* Check whether given graph is connected or not using disjoint sets.
+Input: (T, |Vi|, Adji)
+2
+3
+0 1 0
+1 0 0
+0 0 0
+3
+0 1 1
+1 0 1
+1 1 0 */
+
+#include<stdio.h>
+#include<stdlib.h>
+void makeset(int n,int parent[n],int rank[n])
+{
+for(int i=1;i<=n;i++)
+{
+parent[i]=i;
+rank[i]=0;
+}
+}
+int findPar(int a,int n,int parent[n],int rank[n])
+{
+if(parent[a]==a)
+return a;
+return parent[a]=findPar(parent[a],n,parent,rank);
+}
+void U(int a,int b,int n,int parent[n],int rank[n])
+{
+a=findPar(a,n,parent,rank);
+b=findPar(b,n,parent,rank);
+if(rank[a]>rank[b])
+{
+parent[b]=a;
+}
+else if(rank[b]>rank[a])
+{
+parent[a]=b;
+}
+else
+{
+parent[b]=a;
+rank[a]++;
+}
+}
+int main()
+{
+int t;
+scanf("%d",&t);
+while(t--)
+{
+int n;
+scanf("%d",&n);
+int parent[n+1];
+int rank[n+1];
+int arr[n][n];
+makeset(n,parent,rank);
+for(int i=0;i<n;i++)
+{
+for(int j=0;j<n;j++)
+{
+scanf("%d",&arr[i][j]);
+if(arr[i][j]==1)
+U(i+1,j+1,n,parent,rank);
+}
+}
+int cc[n+1];
+for(int i=0;i<n+1;i++)
+cc[i]=0;
+int count=0;
+for(int i=1;i<=n;i++){
+cc[parent[i]]++;
+}
+for(int i=1;i<=n;i++){
+if(count>1)
+{
+break;
+}
+if(cc[i]>0)
+{
+count++;
+}
+}
+if(count>1)
+printf("Disconnected");
+if(count==1)
+printf("Connected");
+printf("\n");
+}
+return 0;
+}
