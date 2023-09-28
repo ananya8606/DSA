@@ -1,0 +1,59 @@
+#include<stdio.h>
+#include<stdlib.h>
+int parent[10];
+int size[10];
+void makeset(int v)
+{
+parent[v]=v;
+size[v]=1;
+}
+int findPar(int a)
+{
+if(parent[a]==a)
+return a;
+return parent[a]=findPar(parent[a]);
+}
+void U(int a,int b)
+{
+a=findPar(a);
+b=findPar(b);
+if(size[a]>size[b])
+{
+parent[b]=a;
+size[a]++;
+}
+else if(size[b]>size[a])
+{
+parent[a]=b;
+size[b]++;
+}
+else
+{
+parent[a]=b;
+size[b]++;
+}
+}
+int main()
+{
+makeset(0);
+makeset(1);
+makeset(3);
+makeset(4);
+makeset(5);
+makeset(6);
+makeset(7);
+makeset(8);
+makeset(9);
+U(1,5);
+U(3,7);
+U(1,4);
+U(5,7);
+U(0,8);
+U(6,9);
+U(3,9);
+for(int i=0;i<10;i++){
+if(i!=2)
+printf("%d ",parent[i]);
+}
+return 0;
+}
