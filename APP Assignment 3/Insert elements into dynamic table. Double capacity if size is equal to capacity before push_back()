@@ -1,0 +1,81 @@
+/* 1. Consider a dynamic table with the following properties. 
+a. Elements are stored in a dynamic array
+b. Capacity is the size of the dynamic array
+c. Size is defined is the number of elements stored in the array
+Insert elements into dynamic table. Double capacity if size is equal to capacity before push_back()
+Input: (n, elements)
+9
+6 7 8 12 4 10 11 1 15
+Output: 
+capacity = 1; size = 1; elements = 6
+capacity = 2; size = 2; elements = 6 7
+capacity = 4; size = 3; elements = 6 7 8
+capacity = 4; size = 4; elements = 6 7 8 12
+capacity = 8; size = 5; elements = 6 7 8 12 4
+capacity = 8; size = 6; elements = 6 7 8 12 4 10
+capacity = 8; size = 7; elements = 6 7 8 12 4 10 11
+capacity = 8; size = 8; elements = 6 7 8 12 4 10 11 1
+capacity = 16; size = 9; elements = 6 7 8 12 4 10 11 1 15 */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the dynamic table structure
+typedef struct {
+    int *elements;
+    int capacity;
+    int size;
+} DynamicTable;
+
+// Initialize a dynamic table
+void initialize(DynamicTable *table) {
+    table->capacity = 1;
+    table->size = 0;
+    table->elements = (int *)malloc(sizeof(int) * table->capacity);
+}
+
+// Function to push an element into the dynamic table
+void push_back(DynamicTable *table, int element) {
+    if (table->size == table->capacity) {
+        // Double the capacity
+        table->capacity *= 2;
+        table->elements = (int *)realloc(table->elements, sizeof(int) * table->capacity);
+    }
+    table->elements[table->size] = element;
+    table->size++;
+}
+
+// Display the elements in the dynamic table
+void display(DynamicTable *table) {
+    printf("Dynamic Table: ");
+    for (int i = 0; i < table->size; i++) {
+        printf("%d ", table->elements[i]);
+    }
+    printf("\n");
+}
+
+// Main function to test the dynamic table
+int main() {
+    DynamicTable table;
+    int n;
+    scanf("%d",&n);
+    int elements[n];
+    initialize(&table);
+    for (int i = 0; i < n; i++) {
+        scanf("%d",&elements[i]);
+        push_back(&table, elements[i]);
+            printf("capacity : %d ; size : %d ; elements : ", table.capacity , table.size);
+            for(int j=0; j<= i ; j++)
+                printf("%d ",elements[j]);
+            printf("\n");
+        }
+
+
+    // Display the elements in the dynamic table
+    display(&table);
+
+    // Clean up memory
+    free(table.elements);
+
+    return 0;
+}
