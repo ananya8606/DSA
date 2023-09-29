@@ -1,0 +1,85 @@
+/* Implement pop_back() function that deletes the last element. If size is less than or equal to one 
+fourth of the capacity then decrease the capacity by half.
+Input: (capacity, size, elements, # of pop_back()calls.
+16
+9
+6 7 8 12 4 10 11 1 15 
+5
+
+Output: 
+capacity = 16; size = 8; elements = 6 7 8 12 4 10 11 1
+capacity = 16; size = 7; elements = 6 7 8 12 4 10 11
+capacity = 16; size = 6; elements = 6 7 8 12 4 10
+capacity = 16; size = 5; elements = 6 7 8 12 4
+capacity = 8; size = 4; element = 6 7 8 12  */
+
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct{
+int *elements;
+int capacity;
+int size;
+}DynamicTable;
+
+void initialize(DynamicTable *table,int capacity)
+{
+table->capacity=capacity;
+table->size=0;
+table->elements=(int *)malloc(sizeof(int)*table->capacity);
+}
+
+void pop_back(DynamicTable *table)
+{
+free(table->elements[table->size]);
+table->size--;
+if(table->size <= table->capacity/4)
+{
+table->capacity/=2;
+table->elements=(int *)realloc(table->elements,sizeof(int)*table->capacity);
+}
+}
+
+void push_back(DynamicTable *table,int element)
+{
+table->elements[table->size]=element;
+table->size++;
+}
+
+void display(DynamicTable *table)
+{
+printf("Dynamic Table: ");
+for(int i=0;i<table->size;i++){
+printf("%d ",table->elements[i]);
+}
+printf("\n");
+}
+
+int main()
+{
+DynamicTable table;
+int capacity;
+int n;
+scanf("%d",&capacity);
+scanf("%d",&n);
+int elements[n];
+initialize(&table,capacity);
+for(int i=0;i<n;i++)
+{
+scanf("%d",&elements[i]);
+push_back(&table,elements[i]);
+}
+int k;
+scanf("%d",&k);
+for(int i=0;i<k;i++)
+{
+pop_back(&table);
+printf("capacity = %d; size = %d; elements = ",table.capacity,table.size);
+for(int j=0;j<table.size;j++)
+printf("%d ",table.elements[j]);
+printf("\n");
+}
+display(&table);
+free(table.elements);
+return 0;
+}
+
