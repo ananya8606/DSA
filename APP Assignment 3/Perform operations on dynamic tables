@@ -1,0 +1,103 @@
+/* From a given dynamic table perform following operations:
+a. Delete an item by index
+b. Delete the first item by value
+c. Delete all items by value
+Input: (capacity, size, elements, index, first_value, all_value)
+16
+10
+4 2 3 4 3 5 3 4 4 3
+2
+3
+Output:
+capacity = 16; size = 9; elements = 4 2 4 3 5 3 4 4 3
+capacity = 16; size = 8; elements = 4 2 4 5 3 4 4 3
+capacity = 8; size = 4; elements = 2 5 3 3 */
+
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct{
+int *elements;
+int capacity;
+int size;
+}DynamicTable;
+
+void initialize(DynamicTable *table,int capacity)
+{
+table->capacity=capacity;
+table->size=0;
+table->elements=(int *)malloc(sizeof(int)*table->capacity);
+}
+
+void delete_index(DynamicTable *table,int index)
+{
+ for (int i = index; i < table->size - 1; i++) {
+        table->elements[i] = table->elements[i + 1];
+    }
+
+table->size--;
+
+if(table->size <= table->capacity/4)
+{
+table->capacity/=2;
+table->elements=(int *)realloc(table->elements,sizeof(int)*table->capacity);
+}
+}
+
+void push_back(DynamicTable *table,int element)
+{
+table->elements[table->size]=element;
+table->size++;
+}
+
+void display(DynamicTable *table)
+{
+for(int i=0;i<table->size;i++){
+printf("%d ",table->elements[i]);
+}
+printf("\n");
+}
+
+int main()
+{
+DynamicTable table;
+int capacity;
+int n;
+scanf("%d",&capacity);
+scanf("%d",&n);
+int elements[n];
+initialize(&table,capacity);
+for(int i=0;i<n;i++)
+{
+scanf("%d",&elements[i]);
+push_back(&table,elements[i]);
+}
+int index,first_value,all_value;
+scanf("%d",&index);
+scanf("%d",&first_value);
+scanf("%d",&all_value);
+delete_index(&table,index);
+printf("capacity = %d; size = %d; elements = ",table.capacity,table.size);
+display(&table);
+for(int i=0;i<table.size;i++)
+{
+if(table.elements[i]==first_value)
+{
+delete_index(&table,i);
+break;
+}
+}
+printf("capacity = %d; size = %d; elements = ",table.capacity,table.size);
+display(&table);
+for(int i=0;i<table.size;i++)
+{
+if(table.elements[i]==all_value)
+{
+delete_index(&table,i);
+i--;
+}
+}
+printf("capacity = %d; size = %d; elements = ",table.capacity,table.size);
+display(&table);
+free(table.elements);
+return 0;
+}
