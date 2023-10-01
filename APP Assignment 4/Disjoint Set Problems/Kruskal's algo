@@ -1,0 +1,69 @@
+#include<stdio.h>
+#include<stdlib.h>
+void makeSet(int n,int parent[n],int rank[n])
+{
+for(int i=0;i<n;i++)
+{
+parent[i]=i;
+rank[i]=0;
+}
+}
+
+int comparator(const void* p1, const void* p2)
+{
+    const int(*x)[3] = p1;
+    const int(*y)[3] = p2;
+
+    return (*x)[2] - (*y)[2];
+}
+
+int findPar(int v,int n,int parent[n])
+{
+if(parent[v]==v)
+return v;
+return parent[v]=findPar(parent[v],n,parent);
+}
+void U(int u,int v,int n,int parent[n],int rank[n])
+{
+u=findPar(u,n,parent);
+v=findPar(v,n,parent);
+if(u==v)
+return;
+if(rank[u]>rank[v])
+parent[v]=u;
+else if(rank[v]>rank[u])
+parent[u]=v;
+else
+{
+parent[v]=u;
+rank[u]++;
+}
+}
+int main()
+{
+int n;
+scanf("%d",&n);
+int parent[n];
+int rank[n];
+makeSet(n,parent,rank);
+int edges[n][3];
+for(int i=0;i<n;i++)
+{
+scanf("%d",&edges[i][0]);
+scanf("%d",&edges[i][1]);
+scanf("%d",&edges[i][2]);
+}
+qsort(edges,n,sizeof(edges[0]),comparator);
+int minWeight=0;
+for(int i=0;i<n;i++)
+{
+if(findPar(edges[i][0],n,parent)!= findPar(edges[i][1],n,parent))
+{
+U(edges[i][0],edges[i][1],n,parent,rank);
+minWeight+=edges[i][2];
+printf("%d---%d ,weight: %d\n",edges[i][0],edges[i][1],edges[i][2]);
+}
+}
+printf("%d",minWeight);
+return 0;
+}
