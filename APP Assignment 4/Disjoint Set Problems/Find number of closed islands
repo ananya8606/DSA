@@ -1,0 +1,122 @@
+//{ Driver Code Starts
+//Initial Template for C++
+
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+//User function Template for C++
+
+class Solution {
+    public:
+ vector<int> parent;
+    vector<int> rank;
+
+    void dsu(int n) {
+        parent.resize(n);
+        rank.resize(n, 0);
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    int Find(int x) {
+        if (parent[x] == x) return x;
+        return parent[x] = Find(parent[x]);
+    }
+
+    void Union(int x, int y) {
+        int rootX = Find(x);
+        int rootY = Find(y);
+        if (rootX != rootY) {
+            if (rank[rootX] < rank[rootY]) {
+                parent[rootX] = rootY;
+            } else if (rank[rootX] > rank[rootY]) {
+                parent[rootY] = rootX;
+            } else {
+                parent[rootY] = rootX;
+                rank[rootX]++;
+            }
+        }
+    }
+
+    void change(vector<vector<int>>& matrix, int x, int y, int n, int m) {
+        if (x < 0 || y < 0 || x >= m || y >= n || matrix[x][y] == 0) {
+            return;
+        }
+
+        matrix[x][y] = 0;
+
+        change(matrix, x + 1, y, n, m);
+        change(matrix, x, y + 1, n, m);
+        change(matrix, x - 1, y, n, m);
+        change(matrix, x, y - 1, n, m);
+    }
+
+    void changeCorner(vector<vector<int>>& matrix) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if ((i == 0 || j == 0 || i == m - 1 || j == n - 1) && matrix[i][j] == 1) {
+                    change(matrix, i, j, n, m);
+                }
+            }
+        }
+    }
+
+    int closedIslands(vector<vector<int>>& matrix,int m,int n) {
+        dsu(n*m);
+        changeCorner(matrix);
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 1) {
+                    if (i + 1 < m && matrix[i + 1][j] == 1) {
+                        Union(i * n + j, (i + 1) * n + j);
+                    }
+                    if (j + 1 < n && matrix[i][j + 1] == 1) {
+                        Union(i * n + j, i * n + j + 1);
+                    }
+                }
+            }
+        }
+
+        int numComponents = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 1 && Find(i * n + j) == i * n + j) {
+                    numComponents++;
+                }
+            }
+        }
+
+        return numComponents;
+    }
+};
+
+//{ Driver Code Starts.
+int main() {
+	int t;
+	cin>>t;
+	while(t--)
+	{
+        int N, M;
+        cin >> N >> M;
+        vector<vector<int>>matrix(N, vector<int>(M, 0));
+        for(int i=0; i<N; i++)
+            for(int j=0; j<M; j++)
+                cin >> matrix[i][j];
+                
+        Solution obj;
+        int ans = obj.closedIslands(matrix, N, M);
+        cout << ans << "\n";
+    }
+	
+	return 0;
+	
+}
+
+
+// } Driver Code Ends
