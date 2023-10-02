@@ -1,1 +1,87 @@
+#include<stdio.h>
+#include<stdlib.h>
+void makeSet(int n,int parent[n],int rank[n])
+{
+for(int i=0;i<n;i++)
+{
+parent[i]=i;
+rank[i]=0;
+}
+}
+
+int findPar(int v,int n,int parent[n])
+{
+if(parent[v]==v)
+return v;
+return parent[v]=findPar(parent[v],n,parent);
+}
+void U(int u,int v,int n,int parent[n],int rank[n])
+{
+u=findPar(u,n,parent);
+v=findPar(v,n,parent);
+if(u==v)
+return;
+if(rank[u]>rank[v])
+parent[v]=u;
+else if(rank[v]>rank[u])
+parent[u]=v;
+else
+{
+parent[v]=u;
+rank[u]++;
+}
+}
+int main()
+{
+int m,n;
+scanf("%d",&m);
+scanf("%d",&n);
+int parent[m*n];
+int rank[m*n];
+makeSet(m*n,parent,rank);
+char matrix[m][n];
+for(int i=0;i<m;i++)
+{
+for(int j=0;j<n;j++)
+{
+scanf(" %c",&matrix[i][j]);
+}
+}
+for(int i=0;i<m;i++)
+{
+for(int j=0;j<n;j++)
+{
+if(matrix[i][j]=='S')
+{
+for(int p=0;p<m;p++)
+{
+if(matrix[p][j]=='S')
+U(i*n+j,p*n+j,m*n,parent,rank);
+}
+for(int p=0;p<n;p++)
+{
+if(matrix[i][p]=='S')
+U(i*n+j,i*n+p,m*n,parent,rank);
+}
+}
+}
+}
+int cc[m*n];
+int ans=0;
+for(int i=0;i<m*n;i++)
+{
+cc[i]=0;;
+}
+for(int i=0;i<m*n;i++)
+{
+cc[parent[i]]++;
+}
+for(int i=0;i<m*n;i++)
+{
+if(cc[i]>0)
+ans+=cc[i]-1;
+}
+printf("%d",ans);
+return 0;
+}
 
