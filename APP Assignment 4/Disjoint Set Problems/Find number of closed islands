@@ -2,18 +2,16 @@
 in the matrix. It recursively explores all four directions (up, down, left, right) and marks the visited cells as 0.
 
 The changeCorner function iterates through the matrix and checks if a cell is on the boundary (corners or edges). 
-If a cell is on the boundary and contains a 1, it calls the change function to change all connected 1s to 0s. 
+If a cell is on the boundary and contains a 1, it calls the change function to change all connected 1s to 0s.
 This step ensures that the islands on the edges become open.
 
-The closedIslands function is the main function that calculates the number of closed islands.First, it calls the
+The closedIslands function is the main function that calculates the number of closed islands.First, it calls the 
 changeCorner function to make all the boundary-connected 1s open.
-It then iterates through the matrix and identifies edges between adjacent 1s, forming sets of connected components.
-It initializes a disjoint set data structure with each cell as its own representative.
-Next, it processes the matrix to identify horizontal and vertical connections between adjacent 1s.
-If two adjacent cells contain 1s, they are merged using the Union function.
-Finally, it counts the number of connected components (islands) in the matrix by iterating through the elements
-and checking if each element is equal to 1 and has itself as its parent in the disjoint set. The count of such 
-elements represents the number of closed islands.
+It initializes the Union-Find data structure and iterates through the matrix to identify horizontal and vertical 
+connections between adjacent 1s. If two adjacent cells contain 1s, they are merged using the Union function.
+Finally, it counts the number of connected components (islands) in the matrix by iterating through the elements and 
+checking if each element is equal to 1 and has itself as its parent in the disjoint set. The count of such elements 
+represents the number of closed islands.
 */
 
 //{ Driver Code Starts
