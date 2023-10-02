@@ -1,0 +1,71 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX(i, j) (((i) > (j)) ? (i) : (j))
+void makeSet(int n,int parent[n],int rank[n])
+{
+for(int i=0;i<n;i++)
+{
+parent[i]=i;
+rank[i]=0;
+}
+}
+
+int findPar(int v,int n,int parent[n])
+{
+if(parent[v]==v)
+return v;
+return parent[v]=findPar(parent[v],n,parent);
+}
+void U(int u,int v,int n,int parent[n],int rank[n])
+{
+u=findPar(u,n,parent);
+v=findPar(v,n,parent);
+if(u==v)
+return;
+if(rank[u]>rank[v])
+parent[v]=u;
+else if(rank[v]>rank[u])
+parent[u]=v;
+else
+{
+parent[v]=u;
+rank[u]++;
+}
+}
+int main()
+{
+int n;
+scanf("%d",&n);
+int edges[n][2];
+int maxEdge=0;
+for(int i=0;i<n;i++)
+{
+scanf("%d",&edges[i][0]);
+scanf("%d",&edges[i][1]);
+if(maxEdge< MAX(edges[i][0],edges[i][1]))
+ maxEdge=MAX(edges[i][0],edges[i][1]);
+}
+int parent[maxEdge+1];
+int rank[maxEdge+1];
+makeSet(maxEdge+1,parent,rank);
+int edgeReq=0,edgeExtra=0;
+for(int i=0;i<n;i++)
+{
+if(findPar(edges[i][0],maxEdge+1,parent)== findPar(edges[i][1],maxEdge+1,parent))
+edgeExtra++;
+else
+U(edges[i][0],edges[i][1],maxEdge+1,parent,rank);
+}
+for(int i=0;i<=maxEdge;i++)
+{
+if(findPar(i,n,parent)== i)
+edgeReq++;
+}
+if(edgeExtra>=edgeReq-1)
+{
+printf("%d",edgeReq-1);
+}
+else
+printf("-1");
+return 0;
+}
