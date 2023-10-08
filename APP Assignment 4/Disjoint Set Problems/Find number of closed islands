@@ -1,3 +1,8 @@
+/* Given a binary matrix mat[][] of dimensions NxM such that 1 denotes land and 0 denotes water. 
+Find the number of closed islands in the given matrix.
+Note: A closed island is a group of 1s surrounded by only 0s on all the boundaries (except diagonals). 
+In simple words, a closed island is an island whose none of the 1s lie on the edges of the matrix.*/
+
 /* The change function is a recursive function that changes all connected 1s to 0s, starting from a given cell (x, y)
 in the matrix. It recursively explores all four directions (up, down, left, right) and marks the visited cells as 0.
 
