@@ -1,1 +1,23 @@
-
+Implement Stack using Arrays		
+Implement Queue using Arrays		
+Implement Stack using Queue (using single queue)
+Implement Queue using Stack (0(1) amortized method)	
+Check for balanced parentheses		
+Next Greater Element		
+Sort a Stack
+Next Smaller Element				
+LRU cache (IMPORTANT)		
+LFU cache		
+Largest rectangle in a histogram		
+Sliding Window maximum		
+Implement Min Stack		
+Rotten Orange (Using BFS)		
+Stock span problem				
+Find the maximum of minimums of every window size		
+The Celebrity Problem
+Queue using two Stacks	
+Stack using two queues	
+Connect n ropes with minimum cost	
+Minimum time required to rot all oranges	
+First negative integer in every window of size k	
+Reversing a Queue
