@@ -1,0 +1,563 @@
+1. A mathematical expression containing +,-,*,^, / and parenthesis will be provided. Read in the expression, then evaluate it. Display the result rounded to  decimal places.
+
+Constraints
+
+All numeric values are <= 999.
+
+Sample Input
+
+Sample Input 1
+
+5+50*3/20 + (19*2)/7
+
+Solution:
+read x
+var=$(echo "scale=4; $x" | bc)
+printf "%.3f\n" "$var"
+
+2. Given  integers, compute their average, rounded to three decimal places.
+
+Input Format
+The first line contains an integer, .
+Each of the following  lines contains a single integer.
+
+Output Format
+Display the average of the  integers, rounded off to three decimal places.
+
+Solution:
+read x
+avg=0
+for ((i=0;i<x;i++));do
+    read v
+    avg=$((avg+v))
+    done
+avg=$(echo "scale=4;$avg/$x"|bc)
+printf "%.3f" "$avg"
+
+3. Given a CSV file where each row contains the name of a city and its state separated by a comma, your task is to replace the newlines in the file with tabs as demonstrated in the sample.
+
+Input Format
+
+You are given a CSV file where each row contains the name of a city and its state separated by a comma.
+
+Output Format
+
+Replace the newlines in the input with tabs as demonstrated in the sample.
+
+Solution:
+text=""
+while read line; do
+    text+=$line`echo '\t'`
+    done
+printf "$text"
+
+or 
+
+paste -s
+
+The paste -s command is used to concatenate lines of a file horizontally. It takes all the lines from the specified file (or standard input) and concatenates them horizontally, separating them with tabs by default.
+
+4. Given a CSV file where each row contains the name of a city and its state separated by a comma, your task is to restructure the file in such a way, that three consecutive rows are folded into one, and separated by tab.
+
+Input Format
+
+You are given a CSV file where each row contains the name of a city and its state separated by a comma.
+
+Output Format
+
+Restructure the file in such a way, that every group of three consecutive rows are folded into one, and separated by tab.
+
+Solution:
+count=0
+text=""
+
+while read line; do
+    text+="$line"$'\t'
+    count=$((count + 1))
+
+    if [ $count -eq 3 ]; then
+        count=0
+        printf "%s\n" "$text"
+        text=""
+    fi
+done
+
+or
+
+paste - - -
+
+The paste - - - command is used to concatenate lines from the standard input horizontally, with each hyphen ('-') representing a separate input source. It essentially pastes together three consecutive lines from the standard input.
+
+if input is : echo -e "1\n2\n3\n4\n5\n6" | paste - - -
+output will be: 1   2   3
+                4   5   6
+
+
+5. Task
+You are given a list of countries, each on a new line. Your task is to read them into an array and then filter out (remove) all the names containing the letter 'a' or 'A'.
+
+Input Format
+
+The input format consists of a list of country names, each on a separate line. The only characters present in the country names will be upper or lower case characters and hyphens.
+
+Output Format
+
+From the given list, remove the names that contain 'a' or 'A' in them. If there are no names left after removing these characters, you should display a blank line.
+
+Solution:
+text=""
+while read -r line; do
+    if [[ $line != *a* && $line != *A* ]]; then
+        printf "%s\n" "$line"
+    fi
+done
+
+or
+
+arr=($(cat))
+echo "${arr[@]/*[Aa]*/}"
+
+This script reads input into an array named arr and then prints the array elements after removing those containing the letter 'a' or 'A'. The /*[Aa]*/ pattern is used to perform this removal.
+
+or
+
+cat > file
+
+cat file | grep -iv 'a' | tr '\n' ' '
+
+cat file: Reads the content of the 'file'.
+grep -iv 'a': Filters out lines containing 'a' (case-insensitive).
+tr '\n' ' ': Replaces newline characters with a space.
+
+6. You are given a CSV file where each row contains the name of a city and its state separated by a comma. Your task is to replace the newlines in the file with semicolons as demonstrated in the sample.
+
+Input Format
+
+You are given a CSV file where each row contains the name of a city and its state separated by a comma.
+
+Output Format
+
+Replace the newlines in the input file with semicolons as demonstrated in the sample.
+
+Solution: 
+while read line; do
+    text+="$line"$';'
+done
+printf "%s" "${text%?}"
+
+or
+
+paste -s -d ";"
+
+
+7. You are given a CSV file where each row contains the name of a city and its state separated by a comma. Your task is to restructure the file so that three consecutive rows are folded into one line and are separated by semicolons.
+
+Input Format
+
+You are given a CSV file where each row contains the name of a city and its state separated by a comma.
+
+Output Format
+
+Restructure the file so that three consecutive rows are folded into one line and are separated by semicolons.
+
+Solution:
+paste -d ';' - - -
+
+This command tells paste to use semicolon (;) as the delimiter and merge three consecutive lines from the standard input. Each hyphen (-) represents a separate input file (in this case, standard input).
+
+8. Task
+You are given a list of countries, each on a new line. Your task is to read them into an array and then transform them in the following way:
+
+The first capital letter (if present) in each element of the array should be replaced with a dot ('.'). Then, display the entire array with a space between each country's names.
+
+Input Format
+
+The input format consists of a list of country names each on a separate line. The only characters present in the country names will be upper or lower case characters and hyphens.
+
+Output Format
+
+Transform the names as described and display the entire array of country names with a space between each of them.
+
+Solution:
+
+arr=($(cat))
+text=""
+for ((i=0; i<${#arr[@]}; i++)); do
+    arr[$i]=$(echo "${arr[$i]/[A-Z]/.}")
+    text+=${arr[$i]}$" "
+done
+echo "$text"
+
+or
+
+sed 's/[A-Z]/./' | paste -s
+
+9.  Sed is a popular tool that enables quick parsing and transformation of text.
+
+Examples of sed in action:
+
+a. Substitute the first occurrence of 'editor' with 'tool':
+
+`$:~/hackerrank/bash/grep/grep1$` echo "My favorite programming editor is Emacs. Another editor I like is Vim." | sed -e s/editor/tool/
+
+Solution:
+My favorite programming tool is Emacs. Another editor I like is Vim.
+
+-e: Indicates the start of a script block.
+s: Indicates the substitute command.
+editor: The pattern to be replaced.
+tool: The replacement text.
+
+b. Substitute all the occurrences of 'editor' with 'tool':
+
+`$:~/hackerrank/bash/grep/grep1$` echo "My favorite programming editor is Emacs. Another editor I like is Vim." | sed -e s/editor/tool/g
+
+Solution:
+My favorite programming tool is Emacs. Another tool I like is Vim.  
+
+g: Stands for "global" and is an option that tells sed to perform the substitution globally, i.e., replace all occurrences of the pattern on each line, not just the first one.
+
+c. Substitute the second occurrence of 'editor' with 'tool':
+
+`$:~/hackerrank/bash/grep/grep1$` echo "My favorite programming editor is Emacs. Another editor I like is Vim." | sed -e s/editor/tool/2
+
+Solution:
+My favorite programming editor is Emacs. Another tool I like is Vim.
+
+d. Highlight all the occurrences of 'editor' by wrapping them up in brace brackets:
+
+`$:~/hackerrank/bash/grep/grep1$` echo "My favorite programming editor is Emacs. Another editor I like is Vim." | sed -e s/editor/{\&}/g
+
+Solution:
+My favorite programming {editor} is Emacs. Another {editor} I like is Vim.
+
+{ \& }: This is a special replacement syntax where \& represents the entire matched pattern. It is enclosed within curly braces {}.
+
+10. Input:
+Namibia
+Nauru
+Nepal
+Netherlands
+NewZealand
+Nicaragua
+Niger
+Nigeria
+NorthKorea
+Norway
+
+Output:
+N...... N.... N.... N.......... N..Z...... N........ N.... N...... N....K.... N..... 
+
+Solution:
+arr=($(cat))
+text=""
+
+for ((i=0; i<${#arr[@]}; i++)); do
+    arr[$i]=$(echo "${arr[$i]//[a-z]/\.}")
+    text+="${arr[$i]} "
+done
+
+echo "$text"
+
+
+11. Input:
+Namibia
+Nauru
+Nepal
+Netherlands
+NewZealand
+NicarAgua
+Niger
+Nigeria
+NorthKorea
+Norway
+
+Output:
+.amibia .auru .epal .etherlands .ew.ealand .icar.gua .iger .igeria .orth.orea .orway 
+
+Solution:
+arr=($(cat))
+text=""
+
+for ((i=0; i<${#arr[@]}; i++)); do
+    arr[$i]=$(echo "${arr[$i]//[^a-z]/\.}")
+    text+="${arr[$i]} "
+done
+
+echo "$text"
+
+12. For each line in a given input file, transform the first occurrence of the word 'the' with 'this'. The search and transformation should be strictly case sensitive.
+
+Input Format
+
+A text file will be piped into your command through STDIN.
+
+Output Format
+
+Transform the text as specified by the task.
+
+Solution:
+
+sed 's/the/this/'
+
+13. Task
+For each line in a given input file, transform all the occurrences of the word 'thy' with 'your'. The search should be case insensitive, i.e. 'thy', 'Thy', 'tHy' etc. should be transformed to 'your'.
+
+Input Format
+
+A text file will be piped into your command via STDIN.
+
+Output Format
+
+Transform and display the text as required in the task.
+
+Solution:
+sed 's/thy/your/gI'
+
+14. https://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/
+
+15. https://www.folkstalk.com/2012/01/sed-command-in-unix-examples.html
+
+16. https://tldp.org/LDP/abs/html/x23170.html
+
+17. https://tldp.org/LDP/abs/html/awk.html
+
+18. https://tldp.org/LDP/abs/html/refcards.html
+
+19. https://tldp.org/LDP/abs/html/standard-options.html
+
+20. https://tldp.org/LDP/abs/html/bash-options.html
+
+21. https://www.grymoire.com/Unix/Sed.html#uh-10a
+
+22. Task
+You are given a text file that will be piped into your command through STDIN. Use grep to display all the lines that contain the word the in them. The search should be sensitive to case. Display only those lines of the input file that contain the word 'the'.
+
+Input Format
+
+A text file will be piped into your command through STDIN.
+
+Output Format
+
+Output only those lines that contain the word 'the'. The search should be case sensitive. The relative ordering of the lines in the output should be the same as it was in the input.
+
+Solution:
+grep " the " 
+
+23. Task
+You are given a text file that will be piped into your command through STDIN. Use grep to display all those lines that contain the word the in them.
+The search should NOT be sensitive to case.
+Display only those lines of the input file that contain the word 'the'.
+
+Input Format
+
+A text file will be piped into your command through STDIN.
+
+Output Format
+
+Output only those lines that contain the word 'the'. The search should NOT be case sensitive. The relative ordering of the lines in the output should be the same as it was in the input.
+
+Solution:
+grep -i -w "the" 
+
+grep command is searching for the exact word "the" (case-insensitive) in a case-insensitive manner. The -i option makes the search case-insensitive.
+The -w option in grep stands for "word" and is used to match whole words. When you use the -w option, grep ensures that it only matches instances where the pattern appears as a whole word and is not part of a longer word.Without the -w option, this would match all instances of "the" within other words, resulting in more output. However, with -w, it only matches the standalone word "the" and not its occurrences within other words.
+
+24. Task
+You are given a text file that will be piped into your command through STDIN. Use grep to remove all those lines that contain the word 'that'. The search should NOT be sensitive to case.
+
+Input Format
+
+A text file will be piped into your command through STDIN.
+
+Output Format
+
+Only display those lines that do NOT contain the word 'that'. The relative ordering of the lines should be the same as it was in the input file.
+
+Solution:
+grep -iv 'that'
+
+25. Task
+You are given a file with four space separated columns containing the scores of students in three subjects. The first column contains a single character (), the student identifier. The next three columns have three numbers each. The numbers are between  and , both inclusive. These numbers denote the scores of the students in English, Mathematics, and Science, respectively.
+
+Your task is to identify those lines that do not contain all three scores for students.
+
+Input Format
+
+There will be no more than  rows of data.
+Each line will be in the following format:
+[Identifier][English Score][Math Score][Science Score]
+
+Output Format
+
+For each student, if one or more of the three scores is missing, display:
+
+Not all scores are available for [Identifier]
+
+Solution:
+awk 'NF < 4 {print "Not all scores are available for " $1}'
+
+NF: Represents the number of fields in the current line.
+NF < 4: Checks if the number of fields is less than 4.
+The awk command is a powerful and versatile text processing tool in Unix-like operating systems. It's mainly used for pattern scanning and processing.
+
+Suppose you have a file data.txt containing the following content:
+
+Name Age Salary
+John 25 50000
+Alice 30 60000
+Bob 28 55000
+
+You can use awk to print the names and salaries of individuals with a salary greater than 55000:
+
+awk '$3 > 55000 {print $1, $3}' data.txt
+
+Output:
+Alice 60000
+
+26. Task
+You are given a file with four space separated columns containing the scores of students in three subjects. The first column contains a single character (), the student identifier. The next three columns have three numbers each. The numbers are between  and , both inclusive. These numbers denote the scores of the students in English, Mathematics, and Science, respectively.
+
+Your task is to identify whether each of the students has passed or failed.
+A student is considered to have passed if (s)he has a score  or more in each of the three subjects.
+
+Input Format
+
+There will be no more than  rows of data.
+Each line will be in the following format:
+[Identifier][English Score][Math Score][Science Score]
+
+Output Format
+
+Depending on the scores, display the following for each student:
+
+[Identifier] : [Pass] 
+or
+
+[Identifier] : [Fail]  
+
+Solution:
+awk '{ if($2 >= 50 && $3 >= 50 && $4 >= 50) {print $1, ": Pass"} else {print $1, ": Fail"}}'
+
+27. Task
+You are provided a file with four space-separated columns containing the scores of students in three subjects. The first column, contains a single character (A-Z) - the identifier of the student. The next three columns have three numbers (each between 0 and 100, both inclusive) which are the scores of the students in English, Mathematics and Science respectively.
+
+Your task is to identify the performance grade for each student. If the average of the three scores is 80 or more, the grade is 'A'. If the average is 60 or above, but less than 80, the grade is 'B'. If the average is 50 or above, but less than 60, the grade is 'C'. Otherwise the grade is 'FAIL'.
+
+Input Format
+
+There will be no more than 10 rows of data.
+Each line will be in the format:
+[Identifier][Score in English][Score in Math][Score in Science]
+
+Output Format
+
+For each row of data, append a space, a colon, followed by another space, and the grade. Observe the format showed in the sample output.
+
+Solution:
+awk '{if(($2+$3+$4)/3 >= 80) {print $1,$2,$3,$4,": A"} else if (($2+$3+$4)/3 >= 60) {print $1,$2,$3,$4,": B"} else if(($2+$3+$4)/3 >= 50){print $1,$2,$3,$4,": C"} else {print $1,$2,$3,$4,": FAIL"}}'
+
+28. You are provided a file with four space-separated columns containing the scores of students in three subjects. The first column, contains a single character (A-Z) - the identifier of the student. The next three columns have three numbers (each between 0 and 100, both inclusive) which are the scores of the students in English, Mathematics and Science respectively.
+
+Input Format
+
+There will be no more than 10 rows of data. Each line will be in the format:
+[Identifier]<space>[Score in English]<space>[Score in Math]<space>[Score in Science]
+
+Output Format
+
+Concatenate every 2 lines of input with a semi-colon.
+
+Solution:
+count=0 
+awk '{ printf ($0); count++; if (count%2 == 0) printf "\n"; else printf ";"; } '
+
+29. Input Format
+
+Each line contains a credit card number in the form dddd dddd dddd dddd, where  denotes a decimal digit (i.e.,  through ). There are a total of  lines of credit card numbers.
+
+Constraints
+
+note that the value of  does not matter when writing your command.
+Output Format
+
+For each credit card number, print its masked version on a new line.
+
+Sample Input
+
+1234 5678 9101 1234  
+2999 5178 9101 2234  
+9999 5628 9201 1232  
+8888 3678 9101 1232  
+Sample Output
+
+**** **** **** 1234
+**** **** **** 2234
+**** **** **** 1232
+**** **** **** 1232
+Explanation
+
+Observe that the first twelve digits have been masked for each credit card number, and they are printed in the same order as they were received as input.
+
+Solution:
+sed -E 's/[0-9]{4} [0-9]{4} [0-9]{4} ([0-9]{4})/**** **** **** \1/' 
+
+sed -E':
+
+sed: Invokes the stream editor.
+-E: Specifies to use extended regular expressions. This allows the use of {} to specify repetition.
+'s/[0-9]{4} [0-9]{4} [0-9]{4} ([0-9]{4})/**** **** **** \1/':
+
+s/: Indicates a substitution operation.
+[0-9]{4} [0-9]{4} [0-9]{4} ([0-9]{4}): This is the pattern to search for.
+[0-9]{4}: Matches four consecutive digits.
+``: Matches a space between groups of digits.
+([0-9]{4}): Parentheses capture the last four digits into a group.
+/: Separates the search pattern from the replacement.
+**** **** **** \1: This is the replacement pattern.
+**** **** ****: The masked part of the credit card number.
+\1: Refers to the first captured group (the last four digits) from the search pattern.
+So, in summary, this sed command searches for a pattern that matches a credit card number with spaces between groups of four digits and replaces it with a masked version, keeping only the last four digits. The \1 in the replacement refers to the captured group.
+
+30. Task
+
+Given an input file, with N credit card numbers, each in a new line, your task is to reverse the ordering of segments in each credit card number. Assume that the credit card numbers will have 4 space separated segments with 4 digits each.
+
+If the original credit card number is 1434 5678 9101 1234, transform it to 1234 9101 5678 1434.
+
+Useful References: This particular page on StackOverflow has a relevant example about sed, groups and backreferences. Here's a detailed tutorial covering groups and backreferences.
+
+Input Format
+
+N credit card numbers, each in a new line, credit card numbers will have 4 space separated segments with 4 digits each.
+
+Constraints
+
+However, the value of N does not matter while writing your command.
+
+Output Format
+
+N lines, each containing a credit card number with the ordering of its segments reversed.
+
+Solution:
+sed -E "s/([0-9]{4}) ([0-9]{4}) ([0-9]{4}) ([0-9]{4})/\4 \3 \2 \1/"
+
+31. There are N integers in an array A. All but one integer occur in pairs. Your task is to find the number that occurs only once.
+
+Input Format
+
+The first line of the input contains an integer N, indicating the number of integers. The next line contains N space-separated integers that form the array A.
+
+Output Format
+
+Output S, the number that occurs only once.
+
+Solution:
+tr ' ' '\n' | tail +2| sort | uniq -u
+
+or
+
+read
+tr ' ' '\n' | sort | uniq -u
+
+
