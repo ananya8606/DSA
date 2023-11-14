@@ -1,1 +1,27 @@
-
+Reverse a LinkedList		
+Find the middle of LinkedList		
+Merge two sorted Linked List (use method used in merge sort)
+Remove N-th node from back of LinkedList		
+Add two numbers as LinkedList	
+Delete a given Node when a node is given.(O(1) solution)
+Find intersection point of Y LinkedList		
+Detect a cycle in Linked List		
+Reverse a LinkedList in groups of size k.		
+Check if a LinkedList is palindrome or not.		
+Find the starting point of the Loop of LinkedList	
+Flattening of a LinkedList
+Rotate a LinkedList		
+Clone a Linked List with random and next pointer
+3 sum		
+Trapping Rainwater		
+Remove Duplicate from Sorted array		
+Max consecutive ones
+Segregate even and odd nodes in a Linked List		
+Delete all occurrences of a given key in a linked list	
+Remove loop in Linked List	
+Merge K sorted linked lists	
+Flatten a binary tree into linked list	
+Delete without head pointer	
+Given a linked list of 0s, 1s and 2s, sort it	
+Merge K sorted arrays
+Reorder List
