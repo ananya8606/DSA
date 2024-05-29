@@ -1,0 +1,109 @@
+/* Problem Statement
+You are given a linked list with N nodes. You have to write a program that swaps elements of the list pairwise.
+
+You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+Example:
+
+Input Format
+   First-line takes N, the number of elements in the list
+   The next line takes input N space-separated numbers representing elements of the linked list
+   Input is handled for you.
+Output Format
+Linked List with pairwise elements swapped
+Constraints
+The number of nodes in the list is in the range [0, 100].
+0 <= Node.val <= 100
+Sample Testcase 0
+Testcase Input
+[1,2,3,4]
+Testcase Output
+[2, 1, 4, 3]
+Explanation
+We have swapped the first two nodes with values 1 and 2, and the last two nodes with values 3 and 4.*/
+
+#include <iostream>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+class ListNode {
+public:
+    int val;
+    ListNode* next;
+
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+
+    static string listNodeToString(ListNode* node) {
+        if (!node) {
+            return "[]";
+        }
+
+        string result = "";
+        while (node) {
+            result += to_string(node->val) + ", ";
+            node = node->next;
+        }
+        return "[" + result.substr(0, result.length() - 2) + "]";
+    }
+
+    static vector<int> stringToIntegerArray(string input) {
+        input = input.substr(1, input.length() - 2);
+        if (input.length() == 0) {
+            return {};
+        }
+
+        vector<int> output;
+        stringstream ss(input);
+        string token;
+        while (getline(ss, token, ',')) {
+            output.push_back(stoi(token));
+        }
+        return output;
+    }
+
+    static ListNode* stringToListNode(string input) {
+        vector<int> nodeValues = stringToIntegerArray(input);
+
+        ListNode* dummyRoot = new ListNode(0);
+        ListNode* ptr = dummyRoot;
+        for (int item : nodeValues) {
+            ptr->next = new ListNode(item);
+            ptr = ptr->next;
+        }
+        return dummyRoot->next;
+    }
+};
+
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* prevNode = dummy;
+
+        while (head && head->next) {
+            ListNode* firstNode = head;
+            ListNode* secondNode = head->next;
+
+            prevNode->next = secondNode;
+            firstNode->next = secondNode->next;
+            secondNode->next = firstNode;
+
+            prevNode = firstNode;
+            head = firstNode->next;
+        }
+
+        return dummy->next;
+    }
+};
+
+int main() {
+    string line;
+    Solution ob;
+    while (getline(cin, line)) {
+        ListNode* node = ListNode::stringToListNode(line);
+        cout << ListNode::listNodeToString(ob.swapPairs(node)) << endl;
+    }
+    return 0;
+}
