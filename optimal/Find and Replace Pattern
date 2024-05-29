@@ -1,0 +1,110 @@
+/*Problem Statement
+Marco likes words a lot.
+
+He got a book from his friend where many words are written, his friend Alice gave him a pattern and challenged him to find the words from the book having the same pattern given by him.
+
+Help Marco, so that he can win the challenge.
+
+Input Format
+The first line contains the integer N, the number of words.
+
+The second line contains N space string words[i], where 0 <= i < N.
+
+The third line contains the string pattern.
+
+Output Format
+The first line contains the integer M , the number of words matched with the pattern.
+
+The second line contains M space string words[i], where 0 <= i < M.
+
+Constraints
+1 <= pattern.length <= 100
+
+1 <= words.length <= 1000
+
+words[i].length <= 10000
+
+pattern and words[i] are lowercase English letters.
+
+Sample Testcase 0
+Testcase Input
+3
+a b c
+a
+Testcase Output
+3
+a b c
+Explanation
+"a" matches the pattern because there is a permutation {a -> a}.
+"b" matches the pattern because there is a permutation {b -> a}.
+"c" matches the pattern because there is a permutation {c -> a}.
+Sample Testcase 1
+Testcase Input
+6
+abc deq  mee aqq dkd ccc
+abb
+Testcase Output
+2
+mee aqq	
+Explanation
+"mee" matches the pattern because there is a permutation {a -> m, b -> e, ...}.
+
+
+"ccc" does not match the pattern because {a -> c, b -> c, ...} is not a permutation, since a and b map to the same letter.*/
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+// Function to check if the word matches the given pattern
+bool matches_pattern(const string& word, const string& pattern) {
+    if (word.size() != pattern.size()) return false;
+
+    char pattern_to_word[26] = {0};
+    char word_to_pattern[26] = {0};
+
+    for (int i = 0; i < word.size(); ++i) {
+        char w = word[i];
+        char p = pattern[i];
+
+        if (pattern_to_word[p - 'a'] == 0 && word_to_pattern[w - 'a'] == 0) {
+            pattern_to_word[p - 'a'] = w;
+            word_to_pattern[w - 'a'] = p;
+        } else if (pattern_to_word[p - 'a'] != w || word_to_pattern[w - 'a'] != p) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<string> words(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> words[i];
+    }
+
+    string pattern;
+    cin >> pattern;
+
+    vector<string> matched_words;
+
+    for (const string& word : words) {
+        if (matches_pattern(word, pattern)) {
+            matched_words.push_back(word);
+        }
+    }
+
+    cout << matched_words.size() << "\n";
+    for (const string& word : matched_words) {
+        cout << word << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
